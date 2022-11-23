@@ -9,4 +9,7 @@
     <string name="password_repeat">Powtórz hasło</string>
     <string name="phone_number">Numer telefonu</string>
     <string name="submit">Potwierdź</string>
+    <string name="menu_shop">Sklep</string>
+    <string name="menu_orders">Zamówienia</string>
+    <string name="menu_profile">Profil</string>
 </resources>

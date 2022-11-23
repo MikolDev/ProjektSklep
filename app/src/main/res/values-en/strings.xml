@@ -10,4 +10,7 @@
     <string name="login_welcome">Logging</string>
     <string name="password_repeat">Repeat password</string>
     <string name="submit">Submit</string>
+    <string name="menu_shop">Shop</string>
+    <string name="menu_orders">Orders</string>
+    <string name="menu_profile">Profile</string>
 </resources>
