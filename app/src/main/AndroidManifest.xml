@@ -14,12 +14,6 @@
         android:theme="@style/Theme.ProjektSklep"
         tools:targetApi="31">
         <activity
-            android:name=".Account.RegisterActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Account.LoginActivity"
-            android:exported="false" />
-        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Account.RegisterActivity">
+    tools:context=".Account.RegisterFragment">
 
     <TextView
         android:id="@+id/register_title"
@@ -76,6 +76,13 @@
         android:text="@string/submit"
         android:layout_below="@id/register_password_repeat"
         android:layout_marginTop="30dp"/>
+
+    <Button
+        android:id="@+id/register_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/register_submit"
+        android:text="@string/login_welcome" />
 
 
 </RelativeLayout>
