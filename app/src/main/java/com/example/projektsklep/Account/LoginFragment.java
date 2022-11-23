@@ -17,6 +17,7 @@ import com.example.projektsklep.R;
 
 public class LoginFragment extends Fragment {
     private MainActivity mainActivity;
+    private DatabaseHelper dbHelper;
     private EditText editEmail;
     private EditText editPassword;
     private String email;
@@ -27,6 +28,7 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.login_view, container, false);
         mainActivity = (MainActivity) getActivity();
+        dbHelper = new DatabaseHelper(mainActivity);
 
         Button createAccountButton = view.findViewById(R.id.login_create_account);
         createAccountButton.setOnClickListener(v -> mainActivity.changeFragment(1));
@@ -38,10 +40,11 @@ public class LoginFragment extends Fragment {
         submitButton.setOnClickListener(v -> {
             getData();
 
-            if (validate()) {
-                Toast.makeText(getContext(), "Correct data", Toast.LENGTH_LONG).show();
+            if (validate() && dbHelper.checkUser(email, password)) {
+                mainActivity.currentUser = dbHelper.getUserData(email, password);
+                Toast.makeText(getContext(),getString(R.string.welcome) + mainActivity.currentUser.getFirstName(), Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getContext(), "Wrong data", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.wrong_data), Toast.LENGTH_LONG).show();
             }
         });
 

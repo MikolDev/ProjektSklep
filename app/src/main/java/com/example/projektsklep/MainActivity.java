@@ -8,9 +8,11 @@ import android.widget.RelativeLayout;
 
 import com.example.projektsklep.Account.LoginFragment;
 import com.example.projektsklep.Account.RegisterFragment;
+import com.example.projektsklep.Account.User;
 
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout fragmentContainer;
+    public User currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

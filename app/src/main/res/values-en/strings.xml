@@ -14,4 +14,7 @@
     <string name="menu_orders">Orders</string>
     <string name="menu_profile">Profile</string>
     <string name="register">Register</string>
+    <string name="wrong_data">Invalid data</string>
+    <string name="welcome">"Welcome, "</string>
+    <string name="account_created">Account created, please log in</string>
 </resources>

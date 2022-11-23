@@ -3,6 +3,7 @@ package com.example.projektsklep.Account;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -22,12 +23,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD = "password";
 
     private String CREATE_USER_TABLE = "CREATE TABLE " + TABLE_USER + "("
-            + COLUMN_USER_ID + "INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_FIRST_NAME + "TEXT,"
-            + COLUMN_LAST_NAME + "TEXT,"
-            + COLUMN_EMAIL + "TEXT,"
-            + COLUMN_PHONE_NUMBER + "TEXT,"
-            + COLUMN_PASSWORD + "TEXT"
+            + COLUMN_USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_FIRST_NAME + " TEXT,"
+            + COLUMN_LAST_NAME + " TEXT,"
+            + COLUMN_EMAIL + " TEXT,"
+            + COLUMN_PHONE_NUMBER + " TEXT,"
+            + COLUMN_PASSWORD + " TEXT"
             + ");";
 
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
@@ -58,6 +59,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.insert(TABLE_USER, null, values);
         db.close();
+    }
+
+    public boolean checkUser(String email, String password) {
+        String[] columns = {
+                COLUMN_USER_ID
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = COLUMN_EMAIL + " = ?" + " AND " + COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {email, password};
+
+        Cursor cursor = db.query(TABLE_USER,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+        int cursorCount = cursor.getCount();
+        cursor.close();
+        db.close();
+        if (cursorCount > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public User getUserData(String email, String password) {
+        User user = new User();
+
+        String[] columns = {
+                COLUMN_USER_ID,
+                COLUMN_FIRST_NAME,
+                COLUMN_LAST_NAME,
+                COLUMN_EMAIL,
+                COLUMN_PHONE_NUMBER,
+                COLUMN_PASSWORD
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = COLUMN_EMAIL + " = ?" + " AND " + COLUMN_PASSWORD + " = ?";
+        String[] selectionArgs = {email, password};
+
+        Cursor cursor = db.query(TABLE_USER,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                user.setFirstName(cursor.getString(1));
+                user.setLastName(cursor.getString(2));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return user;
     }
 
 }

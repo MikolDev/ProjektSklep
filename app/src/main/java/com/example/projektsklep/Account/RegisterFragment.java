@@ -59,11 +59,12 @@ public class RegisterFragment extends Fragment {
                 user.setPhoneNumber(phoneNumber);
                 user.setPassword(password);
 
-//                dbHelper.addUser(user);
+                dbHelper.addUser(user);
 
-                Toast.makeText(getContext(), "Correct data", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.account_created), Toast.LENGTH_LONG).show();
+                mainActivity.changeFragment(0);
             } else {
-                Toast.makeText(getContext(), "Wrong data", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), getString(R.string.wrong_data), Toast.LENGTH_LONG).show();
             }
         });
 
