@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProjektSklep</string>
+    <string name="register_welcome">Registration</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
+    <string name="phone_number">Phone number</string>
+    <string name="login_welcome">Logging</string>
+    <string name="password_repeat">Repeat password</string>
+    <string name="submit">Submit</string>
+</resources>
