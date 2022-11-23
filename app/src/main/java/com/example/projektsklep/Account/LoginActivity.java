@@ -1,8 +1,10 @@
-package com.example.projektsklep;
+package com.example.projektsklep.Account;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.projektsklep.R;
 
 public class LoginActivity extends AppCompatActivity {
 

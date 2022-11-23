@@ -1,4 +1,4 @@
-package com.example.projektsklep;
+package com.example.projektsklep.Account;
 
 public class User {
     private String firstName;
