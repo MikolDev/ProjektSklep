@@ -43,6 +43,7 @@ public class LoginFragment extends Fragment {
             if (validate() && dbHelper.checkUser(email, password)) {
                 mainActivity.currentUser = dbHelper.getUserData(email, password);
                 Toast.makeText(getContext(),getString(R.string.welcome) + mainActivity.currentUser.getFirstName(), Toast.LENGTH_LONG).show();
+                mainActivity.changeFragment(4);
             } else {
                 Toast.makeText(getContext(), getString(R.string.wrong_data), Toast.LENGTH_LONG).show();
             }

@@ -21,7 +21,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout fragmentContainer;
-    public User currentUser;
+    public User currentUser = null;
     public BottomNavigationView bottomNavigationView;
     public BottomAppBar bottomAppBar;
 
@@ -35,9 +35,42 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomAppBar = findViewById(R.id.bottomAppBar);
 
+        // zaloguj się
         changeFragment(0);
 
-        // jeśli użytkownik jest zalogowany
+        initNavigationListener();
+    }
+
+    public void changeFragment(int id) {
+        Fragment fragment;
+
+        if (currentUser == null) {
+            fragment = new LoginFragment();
+        } else {
+            switch (id) {
+                case 0:
+                    fragment = new LoginFragment();
+                    break;
+                case 1:
+                    fragment = new RegisterFragment();
+                    break;
+                case 2:
+                    fragment = new ShopFragment();
+                    break;
+                case 3:
+                    fragment = new OrdersFragment();
+                    break;
+                case 4:
+                    fragment = new ProfileFragment();
+                    break;
+                default:
+                    fragment = new LoginFragment();
+            }
+        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+    }
+
+    public void initNavigationListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -57,32 +90,5 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-    }
-
-    public void changeFragment(int id) {
-        Fragment fragment;
-
-        switch (id) {
-            case 0:
-                fragment = new LoginFragment();
-                break;
-            case 1:
-                fragment = new RegisterFragment();
-                break;
-            case 2:
-                fragment = new ShopFragment();
-                break;
-            case 3:
-                fragment = new OrdersFragment();
-                break;
-            case 4:
-                fragment = new ProfileFragment();
-                break;
-            default:
-                fragment = new LoginFragment();
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 }
