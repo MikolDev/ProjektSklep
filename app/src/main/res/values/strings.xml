@@ -16,4 +16,6 @@
     <string name="wrong_data">Nieporawne dane</string>
     <string name="welcome">Witaj, </string>
     <string name="account_created">Konto stworzone, zaloguj się</string>
+    <string name="logout">Wyloguj się</string>
+    <string name="logout_success">Wylogowano</string>
 </resources>

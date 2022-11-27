@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,6 +20,7 @@ import com.example.projektsklep.Components.ProfileFragment;
 import com.example.projektsklep.Components.ShopFragment;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout fragmentContainer;
@@ -36,36 +39,59 @@ public class MainActivity extends AppCompatActivity {
         bottomAppBar = findViewById(R.id.bottomAppBar);
 
         // zaloguj się
-        changeFragment(0);
+        if (currentUser == null) {
+            Toast.makeText(getApplicationContext(), "user jest null", Toast.LENGTH_SHORT).show();
+            changeFragment(0);
+        } else {
+            changeFragment(2);
+        }
 
         initNavigationListener();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // zapisywanie currentUsera
+        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+        if (currentUser != null) {
+            sharedPrefEditor.putString("savedUser", currentUser.parseUserToString());
+        }
+        sharedPrefEditor.apply();
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        // odtwarzanie currentUsera
+        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        String savedUser = sharedPreferences.getString("savedUser", null);
+        currentUser = new Gson().fromJson(savedUser, User.class);
     }
 
     public void changeFragment(int id) {
         Fragment fragment;
 
-        if (currentUser == null) {
-            fragment = new LoginFragment();
-        } else {
-            switch (id) {
-                case 0:
-                    fragment = new LoginFragment();
-                    break;
-                case 1:
-                    fragment = new RegisterFragment();
-                    break;
-                case 2:
-                    fragment = new ShopFragment();
-                    break;
-                case 3:
-                    fragment = new OrdersFragment();
-                    break;
-                case 4:
-                    fragment = new ProfileFragment();
-                    break;
-                default:
-                    fragment = new LoginFragment();
-            }
+        switch (id) {
+            case 0:
+                fragment = new LoginFragment();
+                break;
+            case 1:
+                fragment = new RegisterFragment();
+                break;
+            case 2:
+                fragment = new ShopFragment();
+                break;
+            case 3:
+                fragment = new OrdersFragment();
+                break;
+            case 4:
+                fragment = new ProfileFragment();
+                break;
+            default:
+                fragment = new LoginFragment();
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }

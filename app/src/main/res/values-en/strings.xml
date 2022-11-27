@@ -17,4 +17,6 @@
     <string name="wrong_data">Invalid data</string>
     <string name="welcome">"Welcome, "</string>
     <string name="account_created">Account created, please log in</string>
+    <string name="logout">Logout</string>
+    <string name="logout_success">Logged out</string>
 </resources>

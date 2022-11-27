@@ -1,5 +1,7 @@
 package com.example.projektsklep.Account;
 
+import com.google.gson.Gson;
+
 public class User {
     private String firstName;
     private String lastName;
@@ -56,5 +58,10 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String parseUserToString() {
+        String json = new Gson().toJson(this);
+        return json;
     }
 }
