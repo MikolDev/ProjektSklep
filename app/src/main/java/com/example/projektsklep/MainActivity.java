@@ -24,7 +24,7 @@ import com.google.gson.Gson;
 
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout fragmentContainer;
-    public User currentUser = null;
+    private User currentUser = null;
     public BottomNavigationView bottomNavigationView;
     public BottomAppBar bottomAppBar;
 
@@ -37,10 +37,13 @@ public class MainActivity extends AppCompatActivity {
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomAppBar = findViewById(R.id.bottomAppBar);
+        bottomNavigationView.setSelected(false);
+
+        loadData();
 
         // zaloguj się
         if (currentUser == null) {
-            Toast.makeText(getApplicationContext(), "user jest null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "currentUser jest null", Toast.LENGTH_SHORT).show();
             changeFragment(0);
         } else {
             changeFragment(2);
@@ -49,30 +52,41 @@ public class MainActivity extends AppCompatActivity {
         initNavigationListener();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-
-        // zapisywanie currentUsera
-        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
-        if (currentUser != null) {
-            sharedPrefEditor.putString("savedUser", currentUser.parseUserToString());
-        }
-        sharedPrefEditor.apply();
-    }
-
-    protected void onResume() {
-        super.onResume();
-
+    public void loadData() {
         // odtwarzanie currentUsera
         SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
         String savedUser = sharedPreferences.getString("savedUser", null);
         currentUser = new Gson().fromJson(savedUser, User.class);
     }
 
+    public void saveData() {
+        // zapisywanie currentUsera
+        SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
+        if (currentUser != null) {
+            sharedPrefEditor.putString("savedUser", currentUser.parseUserToString());
+        } else {
+            sharedPrefEditor.putString("savedUser", null);
+        }
+        sharedPrefEditor.apply();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        saveData();
+    }
+
+    protected void onResume() {
+        super.onResume();
+
+        loadData();
+    }
+
     public void changeFragment(int id) {
         Fragment fragment;
+        int navItem;
 
         switch (id) {
             case 0:
@@ -93,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
             default:
                 fragment = new LoginFragment();
         }
+
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
@@ -103,7 +118,6 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.item_shop:
                         changeFragment(2);
-                        Toast.makeText(getApplicationContext(), "click", Toast.LENGTH_SHORT).show();
                         return true;
                     case R.id.item_orders:
                         changeFragment(3);
@@ -116,5 +130,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(User currentUser) {
+        this.currentUser = currentUser;
+        saveData();
     }
 }

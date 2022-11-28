@@ -19,4 +19,6 @@
     <string name="account_created">Account created, please log in</string>
     <string name="logout">Logout</string>
     <string name="logout_success">Logged out</string>
+    <string name="log_in">Log in</string>
+    <string name="log_in_orders">Please log in to see your orders</string>
 </resources>

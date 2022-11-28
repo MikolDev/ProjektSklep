@@ -28,20 +28,25 @@ public class ProfileFragment extends Fragment {
 
         profileInfoView = view.findViewById(R.id.profile_info);
 
-        if (mainActivity.currentUser == null) {
+        if (mainActivity.getCurrentUser() == null) {
             profileInfoView.setText("Niezalogowany");
         } else {
-            profileInfoView.setText(mainActivity.currentUser.getFirstName());
+            profileInfoView.setText(mainActivity.getCurrentUser().getFirstName());
         }
 
         logoutButton = view.findViewById(R.id.logout_button);
+
+        if (mainActivity.getCurrentUser() == null) {
+            logoutButton.setText(getString(R.string.login_welcome));
+        } else {
+            logoutButton.setText(getString(R.string.logout));
+        }
+
         logoutButton.setOnClickListener(v -> {
-            if (mainActivity.currentUser != null) {
-                mainActivity.currentUser = null;
-                mainActivity.changeFragment(0);
+            mainActivity.changeFragment(0);
+            if (mainActivity.getCurrentUser() != null) {
+                mainActivity.setCurrentUser(null);
                 Toast.makeText(mainActivity.getApplicationContext(), R.string.logout_success, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(mainActivity.getApplicationContext(), "Jesteś wylogowany", Toast.LENGTH_SHORT).show();
             }
         });
 

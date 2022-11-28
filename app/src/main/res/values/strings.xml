@@ -13,9 +13,11 @@
     <string name="menu_orders">Zamówienia</string>
     <string name="menu_profile">Profil</string>
     <string name="register">Zarejestruj się</string>
-    <string name="wrong_data">Nieporawne dane</string>
+    <string name="wrong_data">Niepoprawne dane</string>
     <string name="welcome">Witaj, </string>
     <string name="account_created">Konto stworzone, zaloguj się</string>
+    <string name="log_in">Zaloguj się</string>
     <string name="logout">Wyloguj się</string>
     <string name="logout_success">Wylogowano</string>
+    <string name="log_in_orders">Zaloguj się, by zobaczyć swoje zamówienia</string>
 </resources>
