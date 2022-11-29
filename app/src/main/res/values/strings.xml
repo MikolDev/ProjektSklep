@@ -20,4 +20,5 @@
     <string name="logout">Wyloguj się</string>
     <string name="logout_success">Wylogowano</string>
     <string name="log_in_orders">Zaloguj się, by zobaczyć swoje zamówienia</string>
+    <string name="not_logged_in">Niezalogowany</string>
 </resources>

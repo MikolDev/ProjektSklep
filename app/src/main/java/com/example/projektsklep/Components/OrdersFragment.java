@@ -15,7 +15,7 @@ import com.example.projektsklep.R;
 
 public class OrdersFragment extends Fragment {
     MainActivity mainActivity;
-    
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

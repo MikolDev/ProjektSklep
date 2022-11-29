@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.projektsklep.Account.User;
 import com.example.projektsklep.MainActivity;
 import com.example.projektsklep.R;
 
@@ -27,16 +28,21 @@ public class ProfileFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
 
         profileInfoView = view.findViewById(R.id.profile_info);
+        User currentUser = mainActivity.getCurrentUser();
 
-        if (mainActivity.getCurrentUser() == null) {
-            profileInfoView.setText("Niezalogowany");
+        if (currentUser == null) {
+            profileInfoView.setText(getString(R.string.not_logged_in));
         } else {
-            profileInfoView.setText(mainActivity.getCurrentUser().getFirstName());
+            profileInfoView.setText(
+                    currentUser.getFirstName()
+                    + " \n"
+                    + currentUser.getLastName()
+            );
         }
 
         logoutButton = view.findViewById(R.id.logout_button);
 
-        if (mainActivity.getCurrentUser() == null) {
+        if (currentUser == null) {
             logoutButton.setText(getString(R.string.login_welcome));
         } else {
             logoutButton.setText(getString(R.string.logout));
@@ -44,7 +50,7 @@ public class ProfileFragment extends Fragment {
 
         logoutButton.setOnClickListener(v -> {
             mainActivity.changeFragment(0);
-            if (mainActivity.getCurrentUser() != null) {
+            if (currentUser != null) {
                 mainActivity.setCurrentUser(null);
                 Toast.makeText(mainActivity.getApplicationContext(), R.string.logout_success, Toast.LENGTH_SHORT).show();
             }
