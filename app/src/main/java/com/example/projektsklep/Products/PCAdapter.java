@@ -4,7 +4,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
-public class MyAdapter extends BaseAdapter {
+public class PCAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return 0;

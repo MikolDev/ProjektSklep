@@ -41,13 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadData();
 
-        // zaloguj się
-        if (currentUser == null) {
-            Toast.makeText(getApplicationContext(), "currentUser jest null", Toast.LENGTH_SHORT).show();
-            changeFragment(0);
-        } else {
-            changeFragment(2);
-        }
+       changeFragment(2);
 
         initNavigationListener();
     }
@@ -86,7 +80,6 @@ public class MainActivity extends AppCompatActivity {
 
     public void changeFragment(int id) {
         Fragment fragment;
-        int navItem;
 
         switch (id) {
             case 0:

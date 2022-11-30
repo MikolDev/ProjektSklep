@@ -22,4 +22,10 @@
     <string name="log_in_orders">Zaloguj się, by zobaczyć swoje zamówienia</string>
     <string name="not_logged_in">Niezalogowany</string>
     <string name="change_data">Zmień dane</string>
+    <string name="central_unit">Jednostka centralna</string>
+    <string name="i_want_mouse">Chcę myszkę</string>
+    <string name="i_want_keyboard">Chcę klawiaturę</string>
+    <string name="i_want_monitor">Chcę monitor</string>
+    <string name="total">Razem</string>
+    <string name="order_submit">Zamawiam</string>
 </resources>

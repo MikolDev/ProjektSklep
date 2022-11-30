@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:paddingHorizontal="10dp">
 
     <TextView
         android:id="@+id/shop_title"
@@ -11,5 +12,105 @@
         android:textSize="40sp"
         android:layout_marginTop="10dp"
         android:textAlignment="center" />
+
+    <Spinner
+        android:id="@+id/spinner_pc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/shop_title"
+        android:layout_marginTop="10dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_mouse"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner_pc"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/mouse_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/i_want_mouse"
+        android:layout_toEndOf="@id/checkbox_mouse"
+        android:layout_alignBaseline="@id/checkbox_mouse" />
+
+    <Spinner
+        android:id="@+id/spinner_mouse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/checkbox_mouse"
+        android:layout_marginTop="5dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_keyboard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner_mouse"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/keyboard_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/i_want_keyboard"
+        android:layout_toEndOf="@id/checkbox_keyboard"
+        android:layout_alignBaseline="@id/checkbox_keyboard" />
+
+    <Spinner
+        android:id="@+id/spinner_keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/checkbox_keyboard"
+        android:layout_marginTop="5dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_monitor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spinner_keyboard"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/monitor_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/i_want_monitor"
+        android:layout_toEndOf="@id/checkbox_monitor"
+        android:layout_alignBaseline="@id/checkbox_monitor" />
+
+    <Spinner
+        android:id="@+id/spinner_monitor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/checkbox_monitor"
+        android:layout_marginTop="5dp"/>
+
+    <TextView
+        android:id="@+id/total_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/total"
+        android:layout_below="@id/spinner_monitor"
+        android:layout_marginTop="10dp"
+        android:textSize="30sp"/>
+
+    <TextView
+        android:id="@+id/total_placeholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/total_header"
+        android:textSize="20sp"
+        android:layout_marginStart="10dp"/>
+
+    <Button
+        android:id="@+id/order_submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/total_placeholder"
+        android:layout_marginTop="20dp"
+        android:text="@string/order_submit" />
+
+
 
 </RelativeLayout>

@@ -23,4 +23,10 @@
     <string name="log_in_orders">Please log in to see your orders</string>
     <string name="not_logged_in">Not logged in</string>
     <string name="change_data">Change data</string>
+    <string name="central_unit">Central unit</string>
+    <string name="i_want_mouse">I want computer mouse</string>
+    <string name="i_want_keyboard">I want keyboard</string>
+    <string name="i_want_monitor">I want monitor</string>
+    <string name="total">Total</string>
+    <string name="order_submit">Order</string>
 </resources>

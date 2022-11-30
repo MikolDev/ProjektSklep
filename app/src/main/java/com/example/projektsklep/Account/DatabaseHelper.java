@@ -12,7 +12,17 @@ import androidx.annotation.Nullable;
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private static final String DB_NAME = "UserDatabase.db";
+    // TABLE USER
     private static final String TABLE_USER = "user";
+    // TABLE PC
+    private static final String TABLE_PC = "pc";
+    // TABLE MOUSE
+    private static final String TABLE_MOUSE = "mouse";
+    // TABLE KEYBOARD
+    private static final String TABLE_KEYBOARD = "keyboard";
+    // TABLE MONITOR
+    private static final String TABLE_MONITOR = "monitor";
+
 
     // User table columns
     private static final String COLUMN_USER_ID = "id";
@@ -32,6 +42,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + ");";
 
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
+    // END user table
+
+    // PC table columns
+    private static final String COLUMN_PC_ID = "id";
+    private static final String COLUMN_PC_DESC = "desc";
+    private static final String COLUMN_PC_PRICE = "price";
+    private static final String COLUMN_PC_IMG = "img";
+
+    private String CREATE_PC_TABLE = "CREATE TABLE " + TABLE_PC + "("
+            + COLUMN_PC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_PC_DESC + " TEXT,"
+            + COLUMN_PC_PRICE + " INTEGER,"
+            + COLUMN_PC_IMG + " INTEGER"
+            + ")";
+    // END PC table
+
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
