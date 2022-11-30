@@ -22,4 +22,5 @@
     <string name="log_in">Log in</string>
     <string name="log_in_orders">Please log in to see your orders</string>
     <string name="not_logged_in">Not logged in</string>
+    <string name="change_data">Change data</string>
 </resources>

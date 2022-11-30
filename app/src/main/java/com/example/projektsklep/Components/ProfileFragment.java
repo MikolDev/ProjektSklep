@@ -20,6 +20,7 @@ public class ProfileFragment extends Fragment {
     MainActivity mainActivity;
     TextView profileInfoView;
     Button logoutButton;
+    Button changeDataButton;
 
     @Nullable
     @Override
@@ -28,16 +29,22 @@ public class ProfileFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
 
         profileInfoView = view.findViewById(R.id.profile_info);
+        changeDataButton = view.findViewById(R.id.change_profile_button);
         User currentUser = mainActivity.getCurrentUser();
 
         if (currentUser == null) {
             profileInfoView.setText(getString(R.string.not_logged_in));
+            changeDataButton.setVisibility(View.GONE);
         } else {
-            profileInfoView.setText(
-                    currentUser.getFirstName()
+            String profileInfo = currentUser.getFirstName()
                     + " \n"
                     + currentUser.getLastName()
-            );
+                    + "\n"
+                    + currentUser.getEmail()
+                    + "\n"
+                    + currentUser.getPhoneNumber();
+            profileInfoView.setText(profileInfo);
+            changeDataButton.setVisibility(View.VISIBLE);
         }
 
         logoutButton = view.findViewById(R.id.logout_button);
