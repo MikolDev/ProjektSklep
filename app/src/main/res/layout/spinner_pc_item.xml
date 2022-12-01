@@ -7,7 +7,7 @@
     android:paddingVertical="10dp">
 
     <ImageView
-        android:id="@+id/spinner_pc_image"
+        android:id="@+id/pc_image"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:scaleType="fitCenter"
@@ -15,12 +15,23 @@
         android:contentDescription="@string/central_unit"
         />
 
-    <TextView
-        android:id="@+id/text_view_pc_desc"
+    <RelativeLayout
+        android:id="@+id/pc_relative"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginStart="10dp"
-         />
-
+        android:paddingHorizontal="10dp">
+        <TextView
+            android:id="@+id/pc_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:id="@+id/pc_desc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/pc_price"
+            android:layout_marginTop="10dp"
+            />
+    </RelativeLayout>
 </LinearLayout>

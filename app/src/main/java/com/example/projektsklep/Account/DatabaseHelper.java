@@ -9,8 +9,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.projektsklep.Products.CentralUnit;
+import com.example.projektsklep.R;
+
+import java.util.ArrayList;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String DB_NAME = "UserDatabase.db";
     // TABLE USER
     private static final String TABLE_USER = "user";
@@ -46,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // PC table columns
     private static final String COLUMN_PC_ID = "id";
-    private static final String COLUMN_PC_DESC = "desc";
+    private static final String COLUMN_PC_DESC = "description";
     private static final String COLUMN_PC_PRICE = "price";
     private static final String COLUMN_PC_IMG = "img";
 
@@ -55,7 +60,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_PC_DESC + " TEXT,"
             + COLUMN_PC_PRICE + " INTEGER,"
             + COLUMN_PC_IMG + " INTEGER"
-            + ")";
+            + ");";
+
+    private String DROP_PC_TABLE = "DROP TABLE IF EXISTS " + TABLE_PC;
     // END PC table
 
 
@@ -66,12 +73,50 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_PC_TABLE);
+        createComputers();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(DROP_USER_TABLE);
+        db.execSQL(DROP_PC_TABLE);
         onCreate(db);
+    }
+
+    public void createComputers() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PC_DESC, "HP Victus TG02-0851nw Ryzen 5 5600G/8GB/512GB SSD/GTX1650 4GB/Win11H");
+        values.put(COLUMN_PC_PRICE, 419900);
+        values.put(COLUMN_PC_IMG, R.drawable.hpvictus);
+
+        db.insert(TABLE_PC, null, values);
+        db.close();
+    }
+
+    public ArrayList<CentralUnit> getComputers() {
+        ArrayList<CentralUnit> centralUnits = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT "
+                + COLUMN_PC_DESC + ", "
+                + COLUMN_PC_PRICE + ", "
+                + COLUMN_PC_IMG
+                + " FROM " + TABLE_PC, null);
+
+        if (c.moveToFirst()){
+            do {
+                CentralUnit cu = new CentralUnit(c.getString(0), c.getInt(1), c.getInt(2));
+                centralUnits.add(cu);
+
+            } while(c.moveToNext());
+        }
+
+        c.close();
+        db.close();
+
+        return centralUnits;
     }
 
     public void addUser(User user) {
