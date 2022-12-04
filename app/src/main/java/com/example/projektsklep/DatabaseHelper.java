@@ -1,4 +1,4 @@
-package com.example.projektsklep.Account;
+package com.example.projektsklep;
 //    http://www.androidtutorialshub.com/android-login-and-register-with-sqlite-database-tutorial/
 
 import android.content.ContentValues;
@@ -9,27 +9,20 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.projektsklep.Account.User;
 import com.example.projektsklep.Products.CentralUnit;
 import com.example.projektsklep.Products.DataSource;
 import com.example.projektsklep.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private DataSource dataSource;
-    private static final int DB_VERSION = 2;
+    private static final int DB_VERSION = 3;
     private static final String DB_NAME = "UserDatabase.db";
     // TABLE USER
     private static final String TABLE_USER = "user";
-    // TABLE PC
-    private static final String TABLE_PC = "pc";
-    // TABLE MOUSE
-    private static final String TABLE_MOUSE = "mouse";
-    // TABLE KEYBOARD
-    private static final String TABLE_KEYBOARD = "keyboard";
-    // TABLE MONITOR
-    private static final String TABLE_MONITOR = "monitor";
-
 
     // User table columns
     private static final String COLUMN_USER_ID = "id";
@@ -51,77 +44,84 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     // END user table
 
-    // PC table columns
-    private static final String COLUMN_PC_ID = "id";
-    private static final String COLUMN_PC_DESC = "description";
-    private static final String COLUMN_PC_PRICE = "price";
-    private static final String COLUMN_PC_IMG = "img";
-
-    private String CREATE_PC_TABLE = "CREATE TABLE " + TABLE_PC + "("
-            + COLUMN_PC_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-            + COLUMN_PC_DESC + " TEXT,"
-            + COLUMN_PC_PRICE + " INTEGER,"
-            + COLUMN_PC_IMG + " INTEGER"
-            + ");";
-
-    private String DROP_PC_TABLE = "DROP TABLE IF EXISTS " + TABLE_PC;
-    // END PC table
-
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         dataSource = new DataSource();
+
+        updateAllProducts();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
-        db.execSQL(CREATE_PC_TABLE);
-        createComputers(db);
+        updateAllProducts();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(DROP_USER_TABLE);
-        db.execSQL(DROP_PC_TABLE);
         onCreate(db);
     }
 
-    public void createComputers(SQLiteDatabase db) {
-        ContentValues values = new ContentValues();
-
-        ArrayList<CentralUnit> computers = dataSource.getCentralUnitRepo();
-
-        computers.forEach((computer) -> {
-            values.put(COLUMN_PC_DESC, computer.getDescription());
-            values.put(COLUMN_PC_PRICE, computer.getPrice());
-            values.put(COLUMN_PC_IMG, computer.getImg());
-        });
-
-        db.insert(TABLE_PC, null, values);
+    public void updateAllProducts() {
+        updateProducts("pc", dataSource.getCentralUnitRepo());
+        updateProducts("mouse", dataSource.getMouseRepo());
+        updateProducts("keyboard", dataSource.getKeyboardRepo());
+        updateProducts("monitor", dataSource.getMonitorRepo());
     }
 
-    public ArrayList<CentralUnit> getComputers() {
-        ArrayList<CentralUnit> centralUnits = new ArrayList<>();
+    public void updateProducts(String tableName, ArrayList<HashMap> repo) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.execSQL("DROP TABLE IF EXISTS " + tableName);
+        String CREATE_TABLE = "CREATE TABLE " + tableName + "("
+                + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + "description TEXT,"
+                + "price INTEGER,"
+                + "img INTEGER"
+                + ");";
+
+        db.execSQL(CREATE_TABLE);
+
+        ArrayList<ContentValues> contentValuesList = new ArrayList<>();
+
+        for (int i = 0; i < repo.size(); i++) {
+            ContentValues cv = new ContentValues();
+            HashMap<String, String> product = repo.get(i);
+
+            cv.put("description", product.get("description"));
+            cv.put("price", product.get("price"));
+            cv.put("img", product.get("img"));
+
+            contentValuesList.add(cv);
+        }
+
+        contentValuesList.forEach((contentValues -> {
+            db.insert(tableName, null, contentValues);
+        }));
+
+    }
+
+    public ArrayList<HashMap> getProducts(String tableName) {
+        ArrayList<HashMap> repo = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT "
-                + COLUMN_PC_DESC + ", "
-                + COLUMN_PC_PRICE + ", "
-                + COLUMN_PC_IMG
-                + " FROM " + TABLE_PC, null);
+        Cursor c = db.rawQuery("SELECT description, price, img FROM " + tableName, null);
 
         if (c.moveToFirst()){
             do {
-                CentralUnit cu = new CentralUnit(c.getString(0), c.getInt(1), c.getInt(2));
-                centralUnits.add(cu);
+                HashMap<String, String> hashMap = new HashMap<>();
+                hashMap.put("description", c.getString(0));
+                hashMap.put("price", c.getString(1));
+                hashMap.put("img", c.getString(2));
+                repo.add(hashMap);
 
             } while(c.moveToNext());
         }
 
         c.close();
 
-        return centralUnits;
+        return repo;
     }
 
     public void addUser(User user) {

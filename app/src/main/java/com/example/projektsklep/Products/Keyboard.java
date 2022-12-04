@@ -1,11 +1,11 @@
 package com.example.projektsklep.Products;
 
-public class Keyboard {
+public class Keyboard implements Product {
     private String description;
-    private int price;
+    private float price;
     private int img;
 
-    public Keyboard(String description, int price, int img) {
+    public Keyboard(String description, float price, int img) {
         this.description = description;
         this.price = price;
         this.img = img;
@@ -22,11 +22,11 @@ public class Keyboard {
         this.description = description;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

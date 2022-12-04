@@ -29,4 +29,5 @@
     <string name="i_want_monitor">I want monitor</string>
     <string name="total">Total</string>
     <string name="order_submit">Order</string>
+    <string name="product">Product</string>
 </resources>

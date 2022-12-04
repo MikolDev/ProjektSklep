@@ -28,4 +28,5 @@
     <string name="i_want_monitor">Chcę monitor</string>
     <string name="total">Razem</string>
     <string name="order_submit">Zamawiam</string>
+    <string name="product">Produkt</string>
 </resources>

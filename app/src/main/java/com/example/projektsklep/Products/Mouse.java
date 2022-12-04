@@ -1,14 +1,14 @@
 package com.example.projektsklep.Products;
 
-public class Mouse {
+public class Mouse implements Product {
     private String description;
-    private int price;
+    private float price;
     private int img;
 
     public Mouse() {
     }
 
-    public Mouse(String description, int price, int img) {
+    public Mouse(String description, float price, int img) {
         this.description = description;
         this.price = price;
         this.img = img;
@@ -22,11 +22,11 @@ public class Mouse {
         this.description = description;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

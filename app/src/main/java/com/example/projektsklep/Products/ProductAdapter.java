@@ -1,11 +1,9 @@
 package com.example.projektsklep.Products;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,29 +11,30 @@ import android.widget.TextView;
 import com.example.projektsklep.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-public class PCAdapter extends BaseAdapter {
+public class ProductAdapter extends BaseAdapter {
     Context context;
-    ArrayList<CentralUnit> centralUnits;
+    ArrayList<HashMap> repo;
     LayoutInflater layoutInflater;
     ImageView imageView;
     TextView priceView;
     TextView descView;
 
-    public PCAdapter(Context context, ArrayList<CentralUnit> centralUnits) {
+    public ProductAdapter(Context context, ArrayList<HashMap> repo) {
         this.context = context;
-        this.centralUnits = centralUnits;
+        this.repo = repo;
         this.layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public int getCount() {
-        return centralUnits.size();
+        return repo.size();
     }
 
     @Override
     public Object getItem(int i) {
-        return null;
+        return repo.get(i);
     }
 
     @Override
@@ -45,19 +44,22 @@ public class PCAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        CentralUnit currentPC = centralUnits.get(i);
-        int img = currentPC.getImg();
-        int price = currentPC.getPrice() / 100;
-        String desc = currentPC.getDescription();
+        HashMap<String, String> hashMap = repo.get(i);
 
-        view = layoutInflater.inflate(R.layout.spinner_pc_item, null);
-        imageView = view.findViewById(R.id.pc_image);
-        priceView = view.findViewById(R.id.pc_price);
-        descView = view.findViewById(R.id.pc_desc);
+        int img = Integer.parseInt(hashMap.get("img"));
+        float price = Integer.parseInt(hashMap.get("price")) ;
+
+        String desc = hashMap.get("description");
+
+        view = layoutInflater.inflate(R.layout.spinner_product_item, null);
+        imageView = view.findViewById(R.id.spinner_image);
+        priceView = view.findViewById(R.id.spinner_price);
+        descView = view.findViewById(R.id.spinner_description);
 
         imageView.setImageResource(img);
-        priceView.setText(price + " zł");
         descView.setText(desc);
+        priceView.setText((price / 100) + " zł");
+
 
         return view;
     }
