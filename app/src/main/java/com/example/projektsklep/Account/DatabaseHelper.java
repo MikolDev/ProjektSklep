@@ -10,11 +10,13 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.projektsklep.Products.CentralUnit;
+import com.example.projektsklep.Products.DataSource;
 import com.example.projektsklep.R;
 
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
+    private DataSource dataSource;
     private static final int DB_VERSION = 2;
     private static final String DB_NAME = "UserDatabase.db";
     // TABLE USER
@@ -68,6 +70,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
+        dataSource = new DataSource();
     }
 
     @Override
@@ -86,9 +89,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void createComputers(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
-        values.put(COLUMN_PC_DESC, "HP Victus TG02-0851nw Ryzen 5 5600G/8GB/512GB SSD/GTX1650 4GB/Win11H");
-        values.put(COLUMN_PC_PRICE, 419900);
-        values.put(COLUMN_PC_IMG, R.drawable.hpvictus);
+
+        ArrayList<CentralUnit> computers = dataSource.getCentralUnitRepo();
+
+        computers.forEach((computer) -> {
+            values.put(COLUMN_PC_DESC, computer.getDescription());
+            values.put(COLUMN_PC_PRICE, computer.getPrice());
+            values.put(COLUMN_PC_IMG, computer.getImg());
+        });
 
         db.insert(TABLE_PC, null, values);
     }
