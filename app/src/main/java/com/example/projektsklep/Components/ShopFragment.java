@@ -29,8 +29,8 @@ public class ShopFragment extends Fragment {
 
         pcSpinner = view.findViewById(R.id.spinner_pc);
 //        tu się robi error, że tabela pc nie istnieje
-//        PCAdapter pcAdapter = new PCAdapter(getContext(), dbHelper.getComputers());
-//        pcSpinner.setAdapter(pcAdapter);
+        PCAdapter pcAdapter = new PCAdapter(getContext(), dbHelper.getComputers());
+        pcSpinner.setAdapter(pcAdapter);
 
         return view;
     }

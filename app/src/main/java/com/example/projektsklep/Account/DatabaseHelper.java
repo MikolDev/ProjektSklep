@@ -74,7 +74,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_PC_TABLE);
-        createComputers();
+        createComputers(db);
     }
 
     @Override
@@ -84,15 +84,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void createComputers() {
-        SQLiteDatabase db = this.getWritableDatabase();
+    public void createComputers(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
         values.put(COLUMN_PC_DESC, "HP Victus TG02-0851nw Ryzen 5 5600G/8GB/512GB SSD/GTX1650 4GB/Win11H");
         values.put(COLUMN_PC_PRICE, 419900);
         values.put(COLUMN_PC_IMG, R.drawable.hpvictus);
 
         db.insert(TABLE_PC, null, values);
-        db.close();
     }
 
     public ArrayList<CentralUnit> getComputers() {
@@ -114,7 +112,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         c.close();
-        db.close();
 
         return centralUnits;
     }
@@ -129,7 +126,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PASSWORD, user.getPassword());
 
         db.insert(TABLE_USER, null, values);
-        db.close();
     }
 
     public boolean checkUser(String email, String password) {
@@ -149,7 +145,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 null);
         int cursorCount = cursor.getCount();
         cursor.close();
-        db.close();
+
         if (cursorCount > 0) {
             return true;
         }
@@ -187,7 +183,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         cursor.close();
-        db.close();
 
         return user;
     }

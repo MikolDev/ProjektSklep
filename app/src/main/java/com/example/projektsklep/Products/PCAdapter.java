@@ -56,7 +56,7 @@ public class PCAdapter extends BaseAdapter {
         descView = view.findViewById(R.id.pc_desc);
 
         imageView.setImageResource(img);
-        priceView.setText(price);
+        priceView.setText(price + " zł");
         descView.setText(desc);
 
         return view;
