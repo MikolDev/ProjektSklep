@@ -1,10 +1,13 @@
 package com.example.projektsklep.Components;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
@@ -17,9 +20,17 @@ import androidx.fragment.app.Fragment;
 
 import com.example.projektsklep.DatabaseHelper;
 import com.example.projektsklep.MainActivity;
+import com.example.projektsklep.Orders.Order;
 import com.example.projektsklep.ProductsController.ProductAdapter;
+import com.example.projektsklep.ProductsModel.CentralUnit;
+import com.example.projektsklep.ProductsModel.Keyboard;
+import com.example.projektsklep.ProductsModel.Monitor;
+import com.example.projektsklep.ProductsModel.Mouse;
 import com.example.projektsklep.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ShopFragment extends Fragment {
@@ -37,9 +48,15 @@ public class ShopFragment extends Fragment {
     int mousePriceFactor = 0;
     int keyboardPriceFactor = 0;
     int monitorPriceFactor = 0;
+    float total = 0;
     CheckBox checkBoxMouse;
     CheckBox checkBoxKeyboard;
     CheckBox checkBoxMonitor;
+    CentralUnit currentCentralUnit;
+    Mouse currentMouse;
+    Keyboard currentKeyboard;
+    Monitor currentMonitor;
+    Button submitButton;
 
     @Nullable
     @Override
@@ -72,6 +89,23 @@ public class ShopFragment extends Fragment {
 
         initCheckBoxListeners();
 
+        submitButton = view.findViewById(R.id.order_submit);
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
+                Date currentDate = Calendar.getInstance().getTime();
+                String today = simpleDateFormat.format(currentDate);
+                if (mousePriceFactor == 0) currentMouse = null;
+                if (keyboardPriceFactor == 0) currentKeyboard = null;
+                if (monitorPriceFactor == 0) currentMonitor = null;
+
+                Order order = new Order(total, currentCentralUnit, currentMouse, currentKeyboard, currentMonitor, today);
+                Log.v("ORDER", order.toString());
+            }
+        });
+
         return view;
     }
 
@@ -82,8 +116,10 @@ public class ShopFragment extends Fragment {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
 
                 pcPrice = Float.valueOf(hashMap.get("price")) / 100;
-                updateTotal();
+                String pcDesc = hashMap.get("description");
+                currentCentralUnit = new CentralUnit(pcDesc, pcPrice, 0);
 
+                updateTotal();
             }
 
             @Override
@@ -96,7 +132,11 @@ public class ShopFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
+
                 mousePrice = Float.valueOf(hashMap.get("price")) / 100;
+                String mouseDesc = hashMap.get("descriptio");
+                currentMouse = new Mouse(mouseDesc, mousePrice, 0);
+
                 updateTotal();
             }
 
@@ -110,7 +150,11 @@ public class ShopFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
+
                 keyboardPrice = Float.valueOf(hashMap.get("price")) / 100;
+                String keyboardDesc = hashMap.get("description");
+                currentKeyboard = new Keyboard(keyboardDesc, keyboardPrice, 0);
+
                 updateTotal();
             }
 
@@ -124,7 +168,11 @@ public class ShopFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
+
                 monitorPrice = Float.valueOf(hashMap.get("price")) / 100;
+                String monitorDesc = hashMap.get("description");
+                currentMonitor = new Monitor(monitorDesc, monitorPrice, 0);
+
                 updateTotal();
             }
 
@@ -175,7 +223,7 @@ public class ShopFragment extends Fragment {
     }
 
     public float updateTotal() {
-        float total = pcPrice + mousePriceFactor * mousePrice + keyboardPriceFactor * keyboardPrice + monitorPriceFactor * monitorPrice;
+        total = pcPrice + mousePriceFactor * mousePrice + keyboardPriceFactor * keyboardPrice + monitorPriceFactor * monitorPrice;
         totalPlaceholder.setText(total + " zł");
         return total;
     }
