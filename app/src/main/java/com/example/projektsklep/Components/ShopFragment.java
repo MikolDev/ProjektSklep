@@ -57,6 +57,7 @@ public class ShopFragment extends Fragment {
     Keyboard currentKeyboard;
     Monitor currentMonitor;
     Button submitButton;
+    public static final String TAG = "ORDER";
 
     @Nullable
     @Override
@@ -97,12 +98,17 @@ public class ShopFragment extends Fragment {
                 @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
                 Date currentDate = Calendar.getInstance().getTime();
                 String today = simpleDateFormat.format(currentDate);
-                if (mousePriceFactor == 0) currentMouse = null;
-                if (keyboardPriceFactor == 0) currentKeyboard = null;
-                if (monitorPriceFactor == 0) currentMonitor = null;
 
-                Order order = new Order(total, currentCentralUnit, currentMouse, currentKeyboard, currentMonitor, today);
-                Log.v("ORDER", order.toString());
+                Mouse orderMouse = currentMouse;
+                Keyboard orderKeyboard = currentKeyboard;
+                Monitor orderMonitor = currentMonitor;
+
+                if (mousePriceFactor == 0) orderMouse = null;
+                if (keyboardPriceFactor == 0) orderKeyboard = null;
+                if (monitorPriceFactor == 0) orderMonitor = null;
+
+                Order order = new Order(total, currentCentralUnit, orderMouse, orderKeyboard, orderMonitor, today);
+                Log.v(TAG, order.toString());
             }
         });
 
@@ -134,7 +140,7 @@ public class ShopFragment extends Fragment {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
 
                 mousePrice = Float.valueOf(hashMap.get("price")) / 100;
-                String mouseDesc = hashMap.get("descriptio");
+                String mouseDesc = hashMap.get("description");
                 currentMouse = new Mouse(mouseDesc, mousePrice, 0);
 
                 updateTotal();
