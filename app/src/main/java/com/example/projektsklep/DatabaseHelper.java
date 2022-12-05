@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.projektsklep.Account.User;
+import com.example.projektsklep.Orders.Order;
 import com.example.projektsklep.ProductsController.DataSource;
 
 import java.util.ArrayList;
@@ -17,10 +18,12 @@ import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private DataSource dataSource;
-    private static final int DB_VERSION = 3;
+    private static final int DB_VERSION = 4;
     private static final String DB_NAME = "UserDatabase.db";
     // TABLE USER
     private static final String TABLE_USER = "user";
+    // TABLE ORDER
+    private static final String TABLE_ORDER = "orders";
 
     // User table columns
     private static final String COLUMN_USER_ID = "id";
@@ -42,6 +45,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String DROP_USER_TABLE = "DROP TABLE IF EXISTS " + TABLE_USER;
     // END user table
 
+    // START order table
+
+    private String CREATE_ORDER_TABLE = "CREATE TABLE " + TABLE_ORDER + "("
+            + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + "total INT,"
+            + "centralUnit TEXT,"
+            + "mouse TEXT,"
+            + "keyboard TEXT,"
+            + "monitor TEXT,"
+            + "ordered DATE,"
+            + "id_user INTEGER NOT NULL"
+            + ");";
+
+    private String DROP_ORDER_TABLE  = "DROP TABLE IF EXISTS " + TABLE_ORDER;
+
+    // END order table
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -53,12 +72,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
+        db.execSQL(CREATE_ORDER_TABLE);
 //        updateAllProducts();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(DROP_USER_TABLE);
+        db.execSQL(DROP_ORDER_TABLE);
         onCreate(db);
     }
 
@@ -183,14 +204,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
+                user.setId(cursor.getInt(0));
                 user.setFirstName(cursor.getString(1));
                 user.setLastName(cursor.getString(2));
+                user.setEmail(cursor.getString(3));
+                user.setPhoneNumber(cursor.getString(4));
             } while (cursor.moveToNext());
         }
 
         cursor.close();
 
         return user;
+    }
+
+    public Order addOrder(Order order) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        String mouse = "";
+        String keyboard = "";
+        String monitor = "";
+
+        if (order.getMouse() != null) mouse = order.getMouse().getDescription();
+        if (order.getKeyboard() != null) keyboard = order.getKeyboard().getDescription();
+        if (order.getMonitor() != null) monitor = order.getMonitor().getDescription();
+
+
+        values.put("total", order.getTotalPrice() * 100);
+        values.put("centralUnit", order.getCentralUnit().getDescription());
+        values.put("mouse", mouse);
+        values.put("keyboard", keyboard);
+        values.put("monitor", monitor);
+        values.put("ordered", order.getOrdered());
+        values.put("id_user", order.getUserId());
+
+        db.insert(TABLE_ORDER, null, values);
+
+        return order;
     }
 
 }

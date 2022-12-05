@@ -14,14 +14,44 @@ public class Order {
     Keyboard keyboard;
     Monitor monitor;
     String ordered;
+    int userId;
 
-    public Order(float totalPrice, CentralUnit centralUnit, Mouse mouse, Keyboard keyboard, Monitor monitor, String ordered) {
+    public Order(float totalPrice, CentralUnit centralUnit, Mouse mouse, Keyboard keyboard, Monitor monitor, String ordered, int userId) {
         this.totalPrice = totalPrice;
         this.centralUnit = centralUnit;
         this.mouse = mouse;
         this.keyboard = keyboard;
         this.monitor = monitor;
         this.ordered = ordered;
+        this.userId = userId;
+    }
+
+    public float getTotalPrice() {
+        return totalPrice;
+    }
+
+    public CentralUnit getCentralUnit() {
+        return centralUnit;
+    }
+
+    public Mouse getMouse() {
+        return mouse;
+    }
+
+    public Keyboard getKeyboard() {
+        return keyboard;
+    }
+
+    public Monitor getMonitor() {
+        return monitor;
+    }
+
+    public String getOrdered() {
+        return ordered;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     @Override
@@ -32,7 +62,8 @@ public class Order {
                 ", mouse=" + mouse +
                 ", keyboard=" + keyboard +
                 ", monitor=" + monitor +
-                ", ordered=" + ordered +
+                ", ordered='" + ordered + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }

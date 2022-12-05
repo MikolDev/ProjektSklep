@@ -30,4 +30,5 @@
     <string name="total">Total</string>
     <string name="order_submit">Order</string>
     <string name="product">Product</string>
+    <string name="log_in_to_order">Please log in to take an order</string>
 </resources>

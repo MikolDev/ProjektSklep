@@ -35,6 +35,7 @@ import java.util.HashMap;
 
 public class ShopFragment extends Fragment {
     MainActivity mainActivity;
+    int currentUserId = -1;
     Spinner pcSpinner;
     Spinner mouseSpinner;
     Spinner keyboardSpinner;
@@ -64,6 +65,7 @@ public class ShopFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.shop_view, container, false);
         mainActivity = (MainActivity) getActivity();
+        if (mainActivity.getCurrentUser() != null) currentUserId = mainActivity.getCurrentUser().getId();
         dbHelper = new DatabaseHelper(mainActivity);
         totalPlaceholder = view.findViewById(R.id.total_placeholder);
 
@@ -95,20 +97,25 @@ public class ShopFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-                Date currentDate = Calendar.getInstance().getTime();
-                String today = simpleDateFormat.format(currentDate);
+                if (currentUserId != -1) {
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                    Date currentDate = Calendar.getInstance().getTime();
+                    String today = simpleDateFormat.format(currentDate);
 
-                Mouse orderMouse = currentMouse;
-                Keyboard orderKeyboard = currentKeyboard;
-                Monitor orderMonitor = currentMonitor;
+                    Mouse orderMouse = currentMouse;
+                    Keyboard orderKeyboard = currentKeyboard;
+                    Monitor orderMonitor = currentMonitor;
 
-                if (mousePriceFactor == 0) orderMouse = null;
-                if (keyboardPriceFactor == 0) orderKeyboard = null;
-                if (monitorPriceFactor == 0) orderMonitor = null;
+                    if (mousePriceFactor == 0) orderMouse = null;
+                    if (keyboardPriceFactor == 0) orderKeyboard = null;
+                    if (monitorPriceFactor == 0) orderMonitor = null;
 
-                Order order = new Order(total, currentCentralUnit, orderMouse, orderKeyboard, orderMonitor, today);
-                Log.v(TAG, order.toString());
+                    Order order = new Order(total, currentCentralUnit, orderMouse, orderKeyboard, orderMonitor, today, currentUserId);
+                    dbHelper.addOrder(order);
+                    Log.v(TAG, order.toString());
+                } else {
+                    Toast.makeText(getContext(), getString(R.string.log_in_to_order), Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
