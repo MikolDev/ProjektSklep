@@ -10,9 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import com.example.projektsklep.Account.User;
-import com.example.projektsklep.Products.CentralUnit;
-import com.example.projektsklep.Products.DataSource;
-import com.example.projektsklep.R;
+import com.example.projektsklep.ProductsController.DataSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -55,7 +53,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
-        updateAllProducts();
+//        updateAllProducts();
     }
 
     @Override

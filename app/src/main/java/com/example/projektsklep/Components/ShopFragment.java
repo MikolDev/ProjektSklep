@@ -5,6 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,9 +17,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.projektsklep.DatabaseHelper;
 import com.example.projektsklep.MainActivity;
-import com.example.projektsklep.Products.CentralUnit;
-import com.example.projektsklep.Products.Product;
-import com.example.projektsklep.Products.ProductAdapter;
+import com.example.projektsklep.ProductsController.ProductAdapter;
 import com.example.projektsklep.R;
 
 import java.util.HashMap;
@@ -34,6 +34,12 @@ public class ShopFragment extends Fragment {
     Float mousePrice = 0f;
     Float keyboardPrice = 0f;
     Float monitorPrice = 0f;
+    int mousePriceFactor = 0;
+    int keyboardPriceFactor = 0;
+    int monitorPriceFactor = 0;
+    CheckBox checkBoxMouse;
+    CheckBox checkBoxKeyboard;
+    CheckBox checkBoxMonitor;
 
     @Nullable
     @Override
@@ -59,6 +65,12 @@ public class ShopFragment extends Fragment {
         monitorSpinner.setAdapter(monitorAdapter);
 
         initSpinnerListeners();
+
+        checkBoxMouse = view.findViewById(R.id.checkbox_mouse);
+        checkBoxKeyboard = view.findViewById(R.id.checkbox_keyboard);
+        checkBoxMonitor = view.findViewById(R.id.checkbox_monitor);
+
+        initCheckBoxListeners();
 
         return view;
     }
@@ -123,8 +135,47 @@ public class ShopFragment extends Fragment {
         });
     }
 
+    public void initCheckBoxListeners() {
+        checkBoxMouse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    mousePriceFactor = 1;
+                } else {
+                    mousePriceFactor = 0;
+                }
+                updateTotal();
+            }
+        });
+
+        checkBoxKeyboard.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    keyboardPriceFactor = 1;
+                } else {
+                    keyboardPriceFactor = 0;
+                }
+                updateTotal();
+            }
+        });
+
+        checkBoxMonitor.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                if (isChecked) {
+                    monitorPriceFactor = 1;
+                } else {
+                    monitorPriceFactor = 0;
+                }
+                updateTotal();
+            }
+        });
+
+    }
+
     public float updateTotal() {
-        float total = pcPrice + mousePrice + keyboardPrice + monitorPrice;
+        float total = pcPrice + mousePriceFactor * mousePrice + keyboardPriceFactor * keyboardPrice + monitorPriceFactor * monitorPrice;
         totalPlaceholder.setText(total + " zł");
         return total;
     }

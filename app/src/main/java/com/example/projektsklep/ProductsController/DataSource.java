@@ -1,5 +1,10 @@
-package com.example.projektsklep.Products;
+package com.example.projektsklep.ProductsController;
 
+import com.example.projektsklep.ProductsModel.CentralUnit;
+import com.example.projektsklep.ProductsModel.Keyboard;
+import com.example.projektsklep.ProductsModel.Monitor;
+import com.example.projektsklep.ProductsModel.Mouse;
+import com.example.projektsklep.ProductsModel.Product;
 import com.example.projektsklep.R;
 
 import java.util.ArrayList;

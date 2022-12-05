@@ -1,4 +1,4 @@
-package com.example.projektsklep.Products;
+package com.example.projektsklep.ProductsController;
 
 import android.content.Context;
 import android.view.LayoutInflater;

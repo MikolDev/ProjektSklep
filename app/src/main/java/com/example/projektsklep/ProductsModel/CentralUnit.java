@@ -1,17 +1,17 @@
-package com.example.projektsklep.Products;
+package com.example.projektsklep.ProductsModel;
 
-public class Mouse implements Product {
+public class CentralUnit implements Product {
     private String description;
     private float price;
     private int img;
 
-    public Mouse() {
-    }
-
-    public Mouse(String description, float price, int img) {
+    public CentralUnit(String description, float price, int img) {
         this.description = description;
         this.price = price;
         this.img = img;
+    }
+
+    public CentralUnit() {
     }
 
     public String getDescription() {

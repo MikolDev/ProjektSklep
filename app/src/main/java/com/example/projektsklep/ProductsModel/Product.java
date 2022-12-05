@@ -1,4 +1,4 @@
-package com.example.projektsklep.Products;
+package com.example.projektsklep.ProductsModel;
 
 public interface Product {
     String description = null;

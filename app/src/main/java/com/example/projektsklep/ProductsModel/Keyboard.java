@@ -1,4 +1,4 @@
-package com.example.projektsklep.Products;
+package com.example.projektsklep.ProductsModel;
 
 public class Keyboard implements Product {
     private String description;
