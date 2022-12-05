@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import androidx.annotation.Nullable;
 
@@ -13,12 +14,13 @@ import com.example.projektsklep.Account.User;
 import com.example.projektsklep.Orders.Order;
 import com.example.projektsklep.ProductsController.DataSource;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private DataSource dataSource;
-    private static final int DB_VERSION = 4;
+    private static final int DB_VERSION = 7;
     private static final String DB_NAME = "UserDatabase.db";
     // TABLE USER
     private static final String TABLE_USER = "user";
@@ -50,12 +52,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private String CREATE_ORDER_TABLE = "CREATE TABLE " + TABLE_ORDER + "("
             + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
             + "total INT,"
-            + "centralUnit TEXT,"
-            + "mouse TEXT,"
-            + "keyboard TEXT,"
-            + "monitor TEXT,"
-            + "ordered DATE,"
-            + "id_user INTEGER NOT NULL"
+            + "centralUnitId INT,"
+            + "mouseId INT,"
+            + "keyboardId INT,"
+            + "monitorId INT,"
+            + "id_user INT NOT NULL,"
+            + "ordered TEXT"
             + ");";
 
     private String DROP_ORDER_TABLE  = "DROP TABLE IF EXISTS " + TABLE_ORDER;
@@ -125,14 +127,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ArrayList<HashMap> repo = new ArrayList<>();
 
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor c = db.rawQuery("SELECT description, price, img FROM " + tableName, null);
+        Cursor c = db.rawQuery("SELECT id, description, price, img FROM " + tableName, null);
 
         if (c.moveToFirst()){
             do {
                 HashMap<String, String> hashMap = new HashMap<>();
-                hashMap.put("description", c.getString(0));
-                hashMap.put("price", c.getString(1));
-                hashMap.put("img", c.getString(2));
+                hashMap.put("id", c.getString(0));
+                hashMap.put("description", c.getString(1));
+                hashMap.put("price", c.getString(2));
+                hashMap.put("img", c.getString(3));
                 repo.add(hashMap);
 
             } while(c.moveToNext());
@@ -141,6 +144,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         c.close();
 
         return repo;
+    }
+
+    public ArrayList<Order> getOrders(int userId) {
+        ArrayList<Order> orders = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery("SELECT id, total, centralUnitId, mouseId, keyboardId, monitorId, id_user, ordered FROM orders WHERE id_user = " + userId, null);
+
+        if (c.moveToFirst()) {
+            do {
+                Order o = new Order();
+                o.setOrderId(c.getInt(0));
+                o.setTotalPrice(c.getInt(1));
+                o.setCentralUnitId(c.getInt(2));
+                o.setMouseId(c.getInt(3));
+                o.setKeyboardId(c.getInt(4));
+                o.setMonitorId(c.getInt(5));
+                o.setUserId(c.getInt(6));
+                o.setOrdered(c.getString(7));
+                orders.add(o);
+            } while (c.moveToNext());
+        }
+
+        return orders;
     }
 
     public void addUser(User user) {
@@ -217,30 +244,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
-    public Order addOrder(Order order) {
+    public long addOrder(Order order) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        String mouse = "";
-        String keyboard = "";
-        String monitor = "";
+        int mouse = -1;
+        int keyboard = -1;
+        int monitor = -1;
 
-        if (order.getMouse() != null) mouse = order.getMouse().getDescription();
-        if (order.getKeyboard() != null) keyboard = order.getKeyboard().getDescription();
-        if (order.getMonitor() != null) monitor = order.getMonitor().getDescription();
+        if (order.getMouseId() != -1) mouse = order.getMouseId();
+        if (order.getKeyboardId() != -1) keyboard = order.getKeyboardId();
+        if (order.getMonitorId() != -1) monitor = order.getMonitorId();
 
 
-        values.put("total", order.getTotalPrice() * 100);
-        values.put("centralUnit", order.getCentralUnit().getDescription());
-        values.put("mouse", mouse);
-        values.put("keyboard", keyboard);
-        values.put("monitor", monitor);
+        values.put("total", order.getTotalPrice());
+        values.put("centralUnitId", order.getCentralUnitId());
+        values.put("mouseId", mouse);
+        values.put("keyboardId", keyboard);
+        values.put("monitorId", monitor);
         values.put("ordered", order.getOrdered());
         values.put("id_user", order.getUserId());
 
-        db.insert(TABLE_ORDER, null, values);
+        long success = db.insert(TABLE_ORDER, null, values);
 
-        return order;
+        return success;
+    }
+
+    public void deleteOrder(int id) {
+        SQLiteDatabase db = getReadableDatabase();
+        db.rawQuery("DELETE FROM orders WHERE id = " + id, null);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.example.projektsklep.ProductsModel;
 
 public class Mouse implements Product {
+    private int productId = -1;
     private String description;
     private float price;
     private int img;
@@ -8,10 +9,21 @@ public class Mouse implements Product {
     public Mouse() {
     }
 
+    public Mouse(int productId, String description, float price, int img) {
+        this.productId = productId;
+        this.description = description;
+        this.price = price;
+        this.img = img;
+    }
+
     public Mouse(String description, float price, int img) {
         this.description = description;
         this.price = price;
         this.img = img;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public String getDescription() {
@@ -36,5 +48,10 @@ public class Mouse implements Product {
 
     public void setImg(int img) {
         this.img = img;
+    }
+
+    @Override
+    public int getProductId() {
+        return productId;
     }
 }

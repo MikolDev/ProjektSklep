@@ -53,10 +53,10 @@ public class ShopFragment extends Fragment {
     CheckBox checkBoxMouse;
     CheckBox checkBoxKeyboard;
     CheckBox checkBoxMonitor;
-    CentralUnit currentCentralUnit;
-    Mouse currentMouse;
-    Keyboard currentKeyboard;
-    Monitor currentMonitor;
+    int curCentralUnitId;
+    int curMouseId;
+    int curKeyboardId;
+    int curMonitorId;
     Button submitButton;
     public static final String TAG = "ORDER";
 
@@ -102,17 +102,23 @@ public class ShopFragment extends Fragment {
                     Date currentDate = Calendar.getInstance().getTime();
                     String today = simpleDateFormat.format(currentDate);
 
-                    Mouse orderMouse = currentMouse;
-                    Keyboard orderKeyboard = currentKeyboard;
-                    Monitor orderMonitor = currentMonitor;
+                    int orderMouseId = curMouseId;
+                    int orderKeyboardId = curKeyboardId;
+                    int orderMonitorId = curMonitorId;
 
-                    if (mousePriceFactor == 0) orderMouse = null;
-                    if (keyboardPriceFactor == 0) orderKeyboard = null;
-                    if (monitorPriceFactor == 0) orderMonitor = null;
+                    if (mousePriceFactor == 0) orderMouseId = -1;
+                    if (keyboardPriceFactor == 0) orderKeyboardId = -1;
+                    if (monitorPriceFactor == 0) orderMonitorId = -1;
 
-                    Order order = new Order(total, currentCentralUnit, orderMouse, orderKeyboard, orderMonitor, today, currentUserId);
-                    dbHelper.addOrder(order);
-                    Log.v(TAG, order.toString());
+                    float orderPrice = total * 100;
+
+                    Order order = new Order((int) orderPrice, curCentralUnitId, orderMouseId, orderKeyboardId, orderMonitorId, today, currentUserId);
+                    long success = dbHelper.addOrder(order);
+                    if (success > 0) {
+                        Toast.makeText(getContext(), getString(R.string.order_taken), Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getContext(), getString(R.string.order_error), Toast.LENGTH_SHORT).show();
+                    }
                 } else {
                     Toast.makeText(getContext(), getString(R.string.log_in_to_order), Toast.LENGTH_SHORT).show();
                 }
@@ -129,8 +135,8 @@ public class ShopFragment extends Fragment {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
 
                 pcPrice = Float.valueOf(hashMap.get("price")) / 100;
-                String pcDesc = hashMap.get("description");
-                currentCentralUnit = new CentralUnit(pcDesc, pcPrice, 0);
+                int pcId = Integer.parseInt(hashMap.get("id"));
+                curCentralUnitId = pcId;
 
                 updateTotal();
             }
@@ -147,8 +153,8 @@ public class ShopFragment extends Fragment {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
 
                 mousePrice = Float.valueOf(hashMap.get("price")) / 100;
-                String mouseDesc = hashMap.get("description");
-                currentMouse = new Mouse(mouseDesc, mousePrice, 0);
+                int mouseId = Integer.parseInt(hashMap.get("id"));
+                curMouseId = mouseId;
 
                 updateTotal();
             }
@@ -165,8 +171,8 @@ public class ShopFragment extends Fragment {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
 
                 keyboardPrice = Float.valueOf(hashMap.get("price")) / 100;
-                String keyboardDesc = hashMap.get("description");
-                currentKeyboard = new Keyboard(keyboardDesc, keyboardPrice, 0);
+                int keyboardId = Integer.parseInt(hashMap.get("id"));
+                curKeyboardId = keyboardId;
 
                 updateTotal();
             }
@@ -183,8 +189,8 @@ public class ShopFragment extends Fragment {
                 HashMap<String, String> hashMap = (HashMap<String, String>) adapterView.getItemAtPosition(i);
 
                 monitorPrice = Float.valueOf(hashMap.get("price")) / 100;
-                String monitorDesc = hashMap.get("description");
-                currentMonitor = new Monitor(monitorDesc, monitorPrice, 0);
+                int monitorId = Integer.parseInt(hashMap.get("id"));
+                curMonitorId = monitorId;
 
                 updateTotal();
             }

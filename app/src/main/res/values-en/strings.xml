@@ -31,4 +31,8 @@
     <string name="order_submit">Order</string>
     <string name="product">Product</string>
     <string name="log_in_to_order">Please log in to take an order</string>
+    <string name="product_id">Product ID:</string>
+    <string name="order_taken">Order taken</string>
+    <string name="order_error">Order error</string>
+    <string name="order_cancel">Cancel</string>
 </resources>

@@ -1,9 +1,17 @@
 package com.example.projektsklep.ProductsModel;
 
 public class Monitor implements Product {
+    private int productId = -1;
     private String description;
     private float price;
     private int img;
+
+    public Monitor(int productId, String description, float price, int img) {
+        this.productId = productId;
+        this.description = description;
+        this.price = price;
+        this.img = img;
+    }
 
     public Monitor(String description, float price, int img) {
         this.description = description;
@@ -12,6 +20,15 @@ public class Monitor implements Product {
     }
 
     public Monitor() {
+    }
+
+    @Override
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
 
     public String getDescription() {

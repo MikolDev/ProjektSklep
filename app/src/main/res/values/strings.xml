@@ -30,4 +30,8 @@
     <string name="total">Razem</string>
     <string name="order_submit">Zamawiam</string>
     <string name="product">Produkt</string>
+    <string name="product_id">Produkt ID:</string>
+    <string name="order_taken">Złożono zamówienie</string>
+    <string name="order_error">Błąd zamówienia</string>
+    <string name="order_cancel">Anuluj</string>
 </resources>

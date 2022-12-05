@@ -20,6 +20,7 @@ public class ProductAdapter extends BaseAdapter {
     ImageView imageView;
     TextView priceView;
     TextView descView;
+    TextView productIdView;
 
     public ProductAdapter(Context context, ArrayList<HashMap> repo) {
         this.context = context;
@@ -48,17 +49,20 @@ public class ProductAdapter extends BaseAdapter {
 
         int img = Integer.parseInt(hashMap.get("img"));
         float price = Integer.parseInt(hashMap.get("price")) ;
+        String productId = hashMap.get("id");
 
         String desc = hashMap.get("description");
 
         view = layoutInflater.inflate(R.layout.spinner_product_item, null);
         imageView = view.findViewById(R.id.spinner_image);
         priceView = view.findViewById(R.id.spinner_price);
+        productIdView = view.findViewById(R.id.spinner_product_id);
         descView = view.findViewById(R.id.spinner_description);
 
         imageView.setImageResource(img);
         descView.setText(desc);
         priceView.setText((price / 100) + " zł");
+        productIdView.setText(productId);
 
 
         return view;
