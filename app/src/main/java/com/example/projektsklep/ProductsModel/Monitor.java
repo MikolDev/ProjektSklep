@@ -19,6 +19,12 @@ public class Monitor implements Product {
         this.img = img;
     }
 
+    public Monitor(String[] productInfo) {
+        this.description = productInfo[0];
+        this.price = Float.parseFloat(productInfo[1]);
+        this.img = Integer.parseInt(productInfo[2]);
+    }
+
     public Monitor() {
     }
 

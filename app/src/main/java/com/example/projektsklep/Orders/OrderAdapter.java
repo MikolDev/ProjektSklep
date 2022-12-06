@@ -1,6 +1,7 @@
 package com.example.projektsklep.Orders;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.projektsklep.DatabaseHelper;
+import com.example.projektsklep.ProductsModel.CentralUnit;
+import com.example.projektsklep.ProductsModel.Keyboard;
+import com.example.projektsklep.ProductsModel.Monitor;
+import com.example.projektsklep.ProductsModel.Mouse;
 import com.example.projektsklep.R;
 
 import java.util.ArrayList;
@@ -50,10 +55,30 @@ public class OrderAdapter extends BaseAdapter {
         TextView productsView = view.findViewById(R.id.order_item_products);
         TextView totalView = view.findViewById(R.id.order_item_total);
 
+        ArrayList<String> productInfo = new ArrayList<>();
+
+        CentralUnit centralUnit = new CentralUnit(dbHelper.getProductInfo(order.getCentralUnitId(), "pc"));
+        productInfo.add(centralUnit.getDescription() + " " + centralUnit.getPrice() / 100 + " zł");
+
+        if (order.getMouseId() != -1) {
+            Mouse mouse = new Mouse(dbHelper.getProductInfo(order.getMouseId(), "mouse"));
+            productInfo.add(mouse.getDescription() + " " + mouse.getPrice() / 100 + " zł");
+        }
+
+        if (order.getKeyboardId() != -1) {
+            Keyboard keyboard = new Keyboard(dbHelper.getProductInfo(order.getKeyboardId(), "keyboard"));
+            productInfo.add(keyboard.getDescription() + " " + keyboard.getPrice() / 100 + " zł");
+        }
+
+        if (order.getMonitorId() != -1) {
+            Monitor monitor = new Monitor(dbHelper.getProductInfo(order.getMonitorId(), "monitor"));
+            productInfo.add(monitor.getDescription() + " " + monitor.getPrice() / 100 + " zł");
+        }
+
         dateView.setText(order.getOrdered());
-
-
-
+        productInfo.forEach((product) -> {
+            productsView.setText(productsView.getText() + product + "\n");
+        });
         totalView.setText((order.getTotalPrice() / 100) + " zł");
 
         Button cancel = view.findViewById(R.id.order_cancel);

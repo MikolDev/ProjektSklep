@@ -19,6 +19,12 @@ public class Keyboard implements Product {
         this.img = img;
     }
 
+    public Keyboard(String[] productInfo) {
+        this.description = productInfo[0];
+        this.price = Float.parseFloat(productInfo[1]);
+        this.img = Integer.parseInt(productInfo[2]);
+    }
+
     public void setProductId(int productId) {
         this.productId = productId;
     }

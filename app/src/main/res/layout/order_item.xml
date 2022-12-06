@@ -6,7 +6,8 @@
     <TextView
         android:id="@+id/order_item_date"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="sample date"/>
 
     <TextView
         android:id="@+id/order_item_products"
@@ -19,6 +20,7 @@
         android:id="@+id/order_item_total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="total"
         android:layout_below="@id/order_item_products"
         android:layout_marginTop="5dp" />
 

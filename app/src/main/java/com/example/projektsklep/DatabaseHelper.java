@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import com.example.projektsklep.Account.User;
 import com.example.projektsklep.Orders.Order;
 import com.example.projektsklep.ProductsController.DataSource;
+import com.example.projektsklep.ProductsModel.Product;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -276,11 +277,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.v("DELETE", "row deleted " + success);
     }
 
-    public String[] getProductInfo(int id) {
+    public String[] getProductInfo(int id, String table) {
         SQLiteDatabase db = getWritableDatabase();
-        String sql = "SELECT ";
-        
-        return null;
+        String sql = "SELECT description, price, img FROM " + table + " WHERE id = " + id;
+        Cursor c = db.rawQuery(sql, null);
+        String[] productInfo = new String[3];
+
+        if (c.moveToFirst()) {
+            do {
+                productInfo[0] = c.getString(0);
+                productInfo[1] = c.getString(1);
+                productInfo[2] = c.getString(2);
+            } while (c.moveToNext());
+        }
+
+        return productInfo;
     }
 
 }
