@@ -272,7 +272,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void deleteOrder(int id) {
         SQLiteDatabase db = getReadableDatabase();
-        db.rawQuery("DELETE FROM orders WHERE id = " + id, null);
+        long success = db.delete("orders", "id=?", new String[]{String.valueOf(id)});
+        Log.v("DELETE", "row deleted " + success);
+    }
+
+    public String[] getProductInfo(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+        String sql = "SELECT ";
+        
+        return null;
     }
 
 }

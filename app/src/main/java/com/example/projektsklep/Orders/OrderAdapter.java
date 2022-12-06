@@ -51,12 +51,15 @@ public class OrderAdapter extends BaseAdapter {
         TextView totalView = view.findViewById(R.id.order_item_total);
 
         dateView.setText(order.getOrdered());
+
+
+
         totalView.setText((order.getTotalPrice() / 100) + " zł");
 
         Button cancel = view.findViewById(R.id.order_cancel);
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 dbHelper.deleteOrder(order.getOrderId());
                 OrderAdapter.this.notifyDataSetChanged();
             }

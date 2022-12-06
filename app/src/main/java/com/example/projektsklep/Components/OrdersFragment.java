@@ -48,6 +48,8 @@ public class OrdersFragment extends Fragment {
         ListView listView = view.findViewById(R.id.orders_list_view);
         ArrayList<Order> orders = dbHelper.getOrders(currentUserId);
         OrderAdapter orderAdapter = new OrderAdapter(getContext(), orders, dbHelper);
+        orderAdapter.notifyDataSetChanged();
         listView.setAdapter(orderAdapter);
+
     }
 }
