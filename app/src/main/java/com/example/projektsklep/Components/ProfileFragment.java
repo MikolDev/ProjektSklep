@@ -1,5 +1,6 @@
 package com.example.projektsklep.Components;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.projektsklep.Account.User;
+import com.example.projektsklep.LoginActivity;
 import com.example.projektsklep.MainActivity;
 import com.example.projektsklep.R;
 
@@ -29,12 +31,10 @@ public class ProfileFragment extends Fragment {
         mainActivity = (MainActivity) getActivity();
 
         profileInfoView = view.findViewById(R.id.profile_info);
-        changeDataButton = view.findViewById(R.id.change_profile_button);
         User currentUser = mainActivity.getCurrentUser();
 
         if (currentUser == null) {
             profileInfoView.setText(getString(R.string.not_logged_in));
-            changeDataButton.setVisibility(View.GONE);
         } else {
             String profileInfo = currentUser.getFirstName()
                     + " \n"
@@ -44,7 +44,6 @@ public class ProfileFragment extends Fragment {
                     + "\n"
                     + currentUser.getPhoneNumber();
             profileInfoView.setText(profileInfo);
-            changeDataButton.setVisibility(View.VISIBLE);
         }
 
         logoutButton = view.findViewById(R.id.logout_button);
@@ -56,7 +55,10 @@ public class ProfileFragment extends Fragment {
         }
 
         logoutButton.setOnClickListener(v -> {
-            mainActivity.changeFragment(0);
+//            mainActivity.changeFragment(0);
+            Intent loginIntent = new Intent(getContext(), LoginActivity.class);
+            startActivity(loginIntent);
+
             if (currentUser != null) {
                 mainActivity.setCurrentUser(null);
                 Toast.makeText(mainActivity.getApplicationContext(), R.string.logout_success, Toast.LENGTH_SHORT).show();

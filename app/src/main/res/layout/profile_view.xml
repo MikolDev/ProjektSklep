@@ -29,12 +29,4 @@
         android:layout_below="@id/profile_info"
         android:text="@string/logout" />
 
-    <Button
-        android:id="@+id/change_profile_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/change_data"
-        android:layout_below="@id/logout_button"
-        android:layout_marginTop="10dp"/>
-
 </RelativeLayout>
