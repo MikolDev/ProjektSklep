@@ -5,8 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -27,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private User currentUser = null;
     public BottomNavigationView bottomNavigationView;
     public BottomAppBar bottomAppBar;
+    public DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +38,24 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         fragmentContainer = findViewById(R.id.fragment_container);
+        dbHelper = new DatabaseHelper(getApplicationContext());
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomAppBar = findViewById(R.id.bottomAppBar);
         bottomNavigationView.setSelected(false);
 
         loadData();
+
+        if (currentUser == null) {
+            Intent loginIntent = getIntent();
+            int intentUserId = loginIntent.getIntExtra("userId", -1);
+            Log.v("user", "user id = " + intentUserId);
+
+            if (intentUserId != -1) {
+                currentUser = dbHelper.getUserById(intentUserId);
+                Log.v("user", currentUser.getFirstName());
+            }
+        }
 
         changeFragment(2);
 

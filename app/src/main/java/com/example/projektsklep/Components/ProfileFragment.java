@@ -22,7 +22,6 @@ public class ProfileFragment extends Fragment {
     MainActivity mainActivity;
     TextView profileInfoView;
     Button logoutButton;
-    Button changeDataButton;
 
     @Nullable
     @Override

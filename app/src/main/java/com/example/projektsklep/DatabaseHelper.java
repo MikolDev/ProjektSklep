@@ -201,7 +201,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int cursorCount = cursor.getCount();
         cursor.close();
 
-        if (cursorCount > 0) {
+        if (cursorCount == 1) {
             return true;
         }
         return false;
@@ -221,6 +221,44 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String selection = COLUMN_EMAIL + " = ?" + " AND " + COLUMN_PASSWORD + " = ?";
         String[] selectionArgs = {email, password};
+
+        Cursor cursor = db.query(TABLE_USER,
+                columns,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                user.setId(cursor.getInt(0));
+                user.setFirstName(cursor.getString(1));
+                user.setLastName(cursor.getString(2));
+                user.setEmail(cursor.getString(3));
+                user.setPhoneNumber(cursor.getString(4));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return user;
+    }
+
+    public User getUserById(int id) {
+        User user = new User();
+
+        String[] columns = {
+                COLUMN_USER_ID,
+                COLUMN_FIRST_NAME,
+                COLUMN_LAST_NAME,
+                COLUMN_EMAIL,
+                COLUMN_PHONE_NUMBER,
+                COLUMN_PASSWORD
+        };
+        SQLiteDatabase db = this.getReadableDatabase();
+        String selection = COLUMN_USER_ID + " = ?";
+        String[] selectionArgs = {String.valueOf(id)};
 
         Cursor cursor = db.query(TABLE_USER,
                 columns,
