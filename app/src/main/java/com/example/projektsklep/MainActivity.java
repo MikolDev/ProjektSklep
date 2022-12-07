@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
 
         loadData();
 
-        changeFragment(2);
+        changeFragment(0);
 
         initNavigationListener();
     }
