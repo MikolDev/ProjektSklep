@@ -6,7 +6,6 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".Account.RegisterFragment"
         android:paddingHorizontal="10dp">
 
         <TextView
@@ -79,14 +78,5 @@
             android:text="@string/submit"
             android:layout_below="@id/register_password_repeat"
             android:layout_marginTop="30dp"/>
-
-        <Button
-            android:id="@+id/register_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/register_submit"
-            android:text="@string/login_welcome" />
-
-
     </RelativeLayout>
 </ScrollView>

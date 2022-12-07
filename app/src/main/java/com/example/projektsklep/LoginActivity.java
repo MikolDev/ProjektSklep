@@ -15,6 +15,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText editEmail;
     EditText editPassword;
     Button submit;
+    Button register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         editPassword = findViewById(R.id.login_password);
         submit = findViewById(R.id.login_submit);
 
-        submit.setOnClickListener((view -> {
+        submit.setOnClickListener(view -> {
             String email = editEmail.getText().toString().trim();
             String password = editPassword.getText().toString().trim();
 
@@ -38,7 +39,13 @@ public class LoginActivity extends AppCompatActivity {
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.wrong_data), Toast.LENGTH_SHORT).show();
             }
-        }));
+        });
+
+        register = findViewById(R.id.login_create_account);
+        register.setOnClickListener(view -> {
+            Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(registerIntent);
+        });
     }
 
     private boolean validate(String email, String password) {
