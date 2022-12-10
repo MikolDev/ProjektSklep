@@ -34,4 +34,11 @@
     <string name="order_taken">Złożono zamówienie</string>
     <string name="order_error">Błąd zamówienia</string>
     <string name="order_cancel">Anuluj</string>
+    <string name="order_cancelled">Zamówienie anulowane</string>
+    <string name="order_sure">Czy na pewno chcesz anulować zamówienie?</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="author">Autor</string>
+    <string name="author_info" translatable="false">Mikołaj Cichocki 4Pp</string>
+    <string name="ok" translatable="false">OK</string>
 </resources>

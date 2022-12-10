@@ -1,13 +1,15 @@
 package com.example.projektsklep.Orders;
 
+import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.projektsklep.DatabaseHelper;
 import com.example.projektsklep.ProductsModel.CentralUnit;
@@ -47,8 +49,8 @@ public class OrderAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View view, ViewGroup viewGroup) {
-        Order order = orders.get(i);
+    public View getView(int position, View view, ViewGroup viewGroup) {
+        Order order = orders.get(position);
 
         view = inflater.inflate(R.layout.order_item, null);
         TextView dateView = view.findViewById(R.id.order_item_date);
@@ -85,11 +87,41 @@ public class OrderAdapter extends BaseAdapter {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHelper.deleteOrder(order.getOrderId());
-                OrderAdapter.this.notifyDataSetChanged();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        switch(i) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                deleteItem(order, position);
+                                dialogInterface.dismiss();
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                dialogInterface.dismiss();
+                                break;
+                        }
+                    }
+                };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setMessage(context.getString(R.string.order_sure))
+                        .setPositiveButton(context.getString(R.string.yes), dialogClickListener)
+                        .setNegativeButton(context.getString(R.string.no), dialogClickListener).show();
             }
         });
 
+        notifyDataSetChanged();
         return view;
+    }
+
+
+
+    private void deleteItem(Order order, int i) {
+        long success = dbHelper.deleteOrder(order.getOrderId());
+        OrderAdapter.this.notifyDataSetChanged();
+        if (success == 1) {
+            Toast.makeText(context, context.getString(R.string.order_cancelled), Toast.LENGTH_SHORT).show();
+            orders.remove(i);
+            notifyDataSetChanged();
+        }
     }
 }

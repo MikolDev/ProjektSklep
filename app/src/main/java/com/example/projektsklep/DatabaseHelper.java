@@ -309,10 +309,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return success;
     }
 
-    public void deleteOrder(int id) {
+    public long deleteOrder(int id) {
         SQLiteDatabase db = getReadableDatabase();
         long success = db.delete("orders", "id=?", new String[]{String.valueOf(id)});
         Log.v("DELETE", "row deleted " + success);
+        return success;
     }
 
     public String[] getProductInfo(int id, String table) {

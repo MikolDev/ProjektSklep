@@ -35,4 +35,9 @@
     <string name="order_taken">Order taken</string>
     <string name="order_error">Order error</string>
     <string name="order_cancel">Cancel</string>
+    <string name="order_cancelled">Order cancelled</string>
+    <string name="order_sure">Are you sure you want to cancel the order?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="author">Author</string>
 </resources>
