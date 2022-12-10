@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import com.example.projektsklep.DatabaseHelper;
 import com.example.projektsklep.MainActivity;
 import com.example.projektsklep.Orders.Order;
+import com.example.projektsklep.Orders.SMS;
 import com.example.projektsklep.ProductsController.ProductAdapter;
 import com.example.projektsklep.ProductsModel.CentralUnit;
 import com.example.projektsklep.ProductsModel.Keyboard;
@@ -116,6 +117,11 @@ public class ShopFragment extends Fragment {
                     long success = dbHelper.addOrder(order);
                     if (success > 0) {
                         Toast.makeText(getContext(), getString(R.string.order_taken), Toast.LENGTH_SHORT).show();
+                        String messsage = getString(R.string.order_taken)
+                                + " nr " + success + "\n"
+                                + today;
+                        SMS sms = new SMS(mainActivity.getCurrentUser().getPhoneNumber(), messsage, getContext());
+//                        sms.sendSms();
                     } else {
                         Toast.makeText(getContext(), getString(R.string.order_error), Toast.LENGTH_SHORT).show();
                     }

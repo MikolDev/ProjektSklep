@@ -50,6 +50,5 @@ public class OrdersFragment extends Fragment {
         ArrayList<Order> orders = dbHelper.getOrders(currentUserId);
         OrderAdapter orderAdapter = new OrderAdapter(getContext(), orders, dbHelper);
         listView.setAdapter(orderAdapter);
-
     }
 }
