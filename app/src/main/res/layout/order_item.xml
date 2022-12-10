@@ -7,7 +7,8 @@
         android:id="@+id/order_item_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="sample date"/>
+        android:text="sample date"
+        android:textStyle="italic"/>
 
     <TextView
         android:id="@+id/order_item_products"
@@ -22,7 +23,8 @@
         android:layout_height="wrap_content"
         android:text="total"
         android:layout_below="@id/order_item_products"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:textStyle="bold"/>
 
     <Button
         android:id="@+id/order_cancel"

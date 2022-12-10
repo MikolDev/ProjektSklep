@@ -27,6 +27,7 @@ import com.google.gson.Gson;
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout fragmentContainer;
     private User currentUser = null;
+    public boolean doSaveUser = true;
     public BottomNavigationView bottomNavigationView;
     public BottomAppBar bottomAppBar;
     public DatabaseHelper dbHelper;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // zapisywanie currentUsera
         SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor sharedPrefEditor = sharedPreferences.edit();
-        if (currentUser != null) {
+        if (currentUser != null && doSaveUser) {
             sharedPrefEditor.putString("savedUser", currentUser.parseUserToString());
         } else {
             sharedPrefEditor.putString("savedUser", null);

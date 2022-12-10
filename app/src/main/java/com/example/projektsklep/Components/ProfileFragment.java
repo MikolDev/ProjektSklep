@@ -2,15 +2,18 @@ package com.example.projektsklep.Components;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.projektsklep.Account.User;
@@ -54,13 +57,31 @@ public class ProfileFragment extends Fragment {
         }
 
         logoutButton.setOnClickListener(v -> {
-//            mainActivity.changeFragment(0);
             Intent loginIntent = new Intent(getContext(), LoginActivity.class);
             startActivity(loginIntent);
 
             if (currentUser != null) {
                 mainActivity.setCurrentUser(null);
                 Toast.makeText(mainActivity.getApplicationContext(), R.string.logout_success, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        SwitchCompat switchCompat = view.findViewById(R.id.save_user_switch);
+
+        if (currentUser == null) {
+            switchCompat.setVisibility(View.GONE);
+        } else {
+            switchCompat.setVisibility(View.VISIBLE);
+        }
+
+        switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    mainActivity.doSaveUser = true;
+                } else {
+                    mainActivity.doSaveUser = false;
+                }
             }
         });
 

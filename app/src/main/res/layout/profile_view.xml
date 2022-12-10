@@ -29,4 +29,13 @@
         android:layout_below="@id/profile_info"
         android:text="@string/logout" />
 
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/save_user_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logout_button"
+        android:layout_marginTop="10dp"
+        android:text="@string/save_user_data"
+        android:checked="true"/>
+
 </RelativeLayout>

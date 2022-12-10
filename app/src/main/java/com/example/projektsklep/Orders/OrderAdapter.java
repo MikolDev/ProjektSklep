@@ -3,6 +3,7 @@ package com.example.projektsklep.Orders;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,26 +61,30 @@ public class OrderAdapter extends BaseAdapter {
         ArrayList<String> productInfo = new ArrayList<>();
 
         CentralUnit centralUnit = new CentralUnit(dbHelper.getProductInfo(order.getCentralUnitId(), "pc"));
-        productInfo.add(centralUnit.getDescription() + " " + centralUnit.getPrice() / 100 + " zł");
+
+        productInfo.add(centralUnit.getDescription() + " - " + centralUnit.getPrice() / 100 + " zł");
 
         if (order.getMouseId() != -1) {
             Mouse mouse = new Mouse(dbHelper.getProductInfo(order.getMouseId(), "mouse"));
-            productInfo.add(mouse.getDescription() + " " + mouse.getPrice() / 100 + " zł");
+            productInfo.add(mouse.getDescription() + " - " + mouse.getPrice() / 100 + " zł");
         }
 
         if (order.getKeyboardId() != -1) {
             Keyboard keyboard = new Keyboard(dbHelper.getProductInfo(order.getKeyboardId(), "keyboard"));
-            productInfo.add(keyboard.getDescription() + " " + keyboard.getPrice() / 100 + " zł");
+            productInfo.add(keyboard.getDescription() + " - " + keyboard.getPrice() / 100 + " zł");
         }
 
         if (order.getMonitorId() != -1) {
             Monitor monitor = new Monitor(dbHelper.getProductInfo(order.getMonitorId(), "monitor"));
-            productInfo.add(monitor.getDescription() + " " + monitor.getPrice() / 100 + " zł");
+            productInfo.add(monitor.getDescription() + " - " + monitor.getPrice() / 100 + " zł");
         }
 
         dateView.setText(order.getOrdered());
         productInfo.forEach((product) -> {
-            productsView.setText(productsView.getText() + product + "\n");
+            productsView.setText(productsView.getText() + product);
+            if (!product.equals(productInfo.get(productInfo.size() - 1))) {
+                productsView.setText(productsView.getText() + "\n\n");
+            }
         });
         totalView.setText((order.getTotalPrice() / 100) + " zł");
 
@@ -112,8 +117,6 @@ public class OrderAdapter extends BaseAdapter {
         notifyDataSetChanged();
         return view;
     }
-
-
 
     private void deleteItem(Order order, int i) {
         long success = dbHelper.deleteOrder(order.getOrderId());
