@@ -41,4 +41,5 @@
     <string name="no">No</string>
     <string name="author">Author</string>
     <string name="save_user_data">Save logging data</string>
+    <string name="email_exists">Email already exists</string>
 </resources>

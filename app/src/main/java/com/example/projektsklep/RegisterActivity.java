@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,12 +53,16 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setPhoneNumber(phoneNumber);
                 user.setPassword(password);
 
-                dbHelper.addUser(user);
+                long success = dbHelper.addUser(user);
+                Log.v("REG", "code: " + success);
 
-                Toast.makeText(getApplicationContext(), getString(R.string.account_created), Toast.LENGTH_LONG).show();
-
-                Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
-                startActivity(loginIntent);
+                if (success > 0) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.account_created), Toast.LENGTH_LONG).show();
+                    Intent loginIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(loginIntent);
+                } else {
+                    Toast.makeText(getApplicationContext(), getString(R.string.email_exists), Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(getApplicationContext(), getString(R.string.wrong_data), Toast.LENGTH_LONG).show();
             }

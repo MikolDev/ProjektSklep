@@ -69,7 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DB_NAME, null, DB_VERSION);
         dataSource = new DataSource();
 
-        updateAllProducts();
+//        updateAllProducts();
     }
 
     @Override
@@ -121,7 +121,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValuesList.forEach((contentValues -> {
             db.insert(tableName, null, contentValues);
         }));
-
     }
 
     public ArrayList<HashMap> getProducts(String tableName) {
@@ -171,7 +170,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return orders;
     }
 
-    public void addUser(User user) {
+    public long addUser(User user) {
+        if (emailExists(user.getEmail())) return -1;
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_FIRST_NAME, user.getFirstName());
@@ -180,7 +180,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_PHONE_NUMBER, user.getPhoneNumber());
         values.put(COLUMN_PASSWORD, user.getPassword());
 
-        db.insert(TABLE_USER, null, values);
+        return db.insert(TABLE_USER, null, values);
     }
 
     public boolean checkUser(String email, String password) {
@@ -204,6 +204,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (cursorCount == 1) {
             return true;
         }
+        return false;
+    }
+
+    public boolean emailExists(String input) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String selection = "email = ?";
+        String[] selectionArgs = {input};
+
+        Cursor c = db.query(TABLE_USER,
+                new String[]{"email"},
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null);
+
+        if (c.getCount() > 0) return true;
         return false;
     }
 
