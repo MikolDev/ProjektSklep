@@ -54,7 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
                 user.setPassword(password);
 
                 long success = dbHelper.addUser(user);
-                Log.v("REG", "code: " + success);
 
                 if (success > 0) {
                     Toast.makeText(getApplicationContext(), getString(R.string.account_created), Toast.LENGTH_LONG).show();

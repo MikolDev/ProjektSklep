@@ -1,6 +1,8 @@
 package com.example.projektsklep.Components;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import com.example.projektsklep.DatabaseHelper;
 import com.example.projektsklep.MainActivity;
 import com.example.projektsklep.Orders.Order;
+import com.example.projektsklep.Orders.OrderState;
 import com.example.projektsklep.Orders.SMS;
 import com.example.projektsklep.ProductsController.ProductAdapter;
 import com.example.projektsklep.ProductsModel.CentralUnit;
@@ -28,6 +31,7 @@ import com.example.projektsklep.ProductsModel.Keyboard;
 import com.example.projektsklep.ProductsModel.Monitor;
 import com.example.projektsklep.ProductsModel.Mouse;
 import com.example.projektsklep.R;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,6 +63,7 @@ public class ShopFragment extends Fragment {
     int curKeyboardId;
     int curMonitorId;
     Button submitButton;
+    OrderState orderState;
     public static final String TAG = "ORDER";
 
     @Nullable
@@ -132,6 +137,56 @@ public class ShopFragment extends Fragment {
         });
 
         return view;
+    }
+
+    public void saveFormState() {
+        int pcPos = pcSpinner.getSelectedItemPosition();
+        int mousePos = mouseSpinner.getSelectedItemPosition();
+        int keyboardPos = keyboardSpinner.getSelectedItemPosition();
+        int monitorPos = monitorSpinner.getSelectedItemPosition();
+
+        orderState = new OrderState(mousePriceFactor, keyboardPriceFactor, monitorPriceFactor, pcPos, mousePos, keyboardPos, monitorPos);
+
+        SharedPreferences formPreferences = this.getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor formPrefEditor = formPreferences.edit();
+        formPrefEditor.putString("formState", orderState.parseToString());
+        formPrefEditor.apply();
+        
+        super.onDestroyView();
+    }
+
+    public void loadFormState() {
+        SharedPreferences formPreferences = this.getActivity().getPreferences(Context.MODE_PRIVATE);
+        String savedState = formPreferences.getString("formState", null);
+        orderState = new Gson().fromJson(savedState, OrderState.class);
+    }
+
+    public void restoreForm() {
+        if (orderState.isMouse == 1) {
+            checkBoxMouse.setChecked(true);
+        }
+        if (orderState.isKeyboard == 1) {
+            checkBoxKeyboard.setChecked(true);
+        }
+        if(orderState.isMonitor == 1) {
+            checkBoxMonitor.setChecked(true);
+        }
+        pcSpinner.setSelection(orderState.pcId);
+        mouseSpinner.setSelection(orderState.mouseId);
+        keyboardSpinner.setSelection(orderState.keyboardId);
+        monitorSpinner.setSelection(orderState.monitorId);
+    }
+
+    public void onPause() {
+        saveFormState();
+        super.onPause();
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        loadFormState();
+        restoreForm();
+        super.onViewStateRestored(savedInstanceState);
     }
 
     public void initSpinnerListeners() {
