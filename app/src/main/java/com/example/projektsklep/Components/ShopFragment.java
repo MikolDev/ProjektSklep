@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class ShopFragment extends Fragment {
     MainActivity mainActivity;
@@ -151,7 +152,7 @@ public class ShopFragment extends Fragment {
         SharedPreferences.Editor formPrefEditor = formPreferences.edit();
         formPrefEditor.putString("formState", orderState.parseToString());
         formPrefEditor.apply();
-        
+
         super.onDestroyView();
     }
 
@@ -162,19 +163,21 @@ public class ShopFragment extends Fragment {
     }
 
     public void restoreForm() {
-        if (orderState.isMouse == 1) {
-            checkBoxMouse.setChecked(true);
+        if (orderState != null) {
+            if (orderState.isMouse == 1) {
+                checkBoxMouse.setChecked(true);
+            }
+            if (orderState.isKeyboard == 1) {
+                checkBoxKeyboard.setChecked(true);
+            }
+            if(orderState.isMonitor == 1) {
+                checkBoxMonitor.setChecked(true);
+            }
+            pcSpinner.setSelection(orderState.pcId);
+            mouseSpinner.setSelection(orderState.mouseId);
+            keyboardSpinner.setSelection(orderState.keyboardId);
+            monitorSpinner.setSelection(orderState.monitorId);
         }
-        if (orderState.isKeyboard == 1) {
-            checkBoxKeyboard.setChecked(true);
-        }
-        if(orderState.isMonitor == 1) {
-            checkBoxMonitor.setChecked(true);
-        }
-        pcSpinner.setSelection(orderState.pcId);
-        mouseSpinner.setSelection(orderState.mouseId);
-        keyboardSpinner.setSelection(orderState.keyboardId);
-        monitorSpinner.setSelection(orderState.monitorId);
     }
 
     public void onPause() {

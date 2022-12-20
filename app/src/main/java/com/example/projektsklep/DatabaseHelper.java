@@ -1,5 +1,4 @@
 package com.example.projektsklep;
-//    http://www.androidtutorialshub.com/android-login-and-register-with-sqlite-database-tutorial/
 
 import android.content.ContentValues;
 import android.content.Context;
