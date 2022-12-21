@@ -127,7 +127,7 @@ public class ShopFragment extends Fragment {
                                 + " nr " + success + "\n"
                                 + today;
                         SMS sms = new SMS(mainActivity.getCurrentUser().getPhoneNumber(), messsage, getContext());
-//                        sms.sendSms();
+                        sms.sendSms();
                     } else {
                         Toast.makeText(getContext(), getString(R.string.order_error), Toast.LENGTH_SHORT).show();
                     }

@@ -20,7 +20,7 @@ import java.util.HashMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private DataSource dataSource;
-    private static final int DB_VERSION = 7;
+    private static final int DB_VERSION = 9;
     private static final String DB_NAME = "UserDatabase.db";
     // TABLE USER
     private static final String TABLE_USER = "user";
@@ -75,7 +75,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
         db.execSQL(CREATE_ORDER_TABLE);
-//        updateAllProducts();
+        updateAllProducts(db);
     }
 
     @Override
@@ -85,15 +85,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void updateAllProducts() {
-        updateProducts("pc", dataSource.getCentralUnitRepo());
-        updateProducts("mouse", dataSource.getMouseRepo());
-        updateProducts("keyboard", dataSource.getKeyboardRepo());
-        updateProducts("monitor", dataSource.getMonitorRepo());
+    public void updateAllProducts(SQLiteDatabase db) {
+        updateProducts("pc", dataSource.getCentralUnitRepo(), db);
+        updateProducts("mouse", dataSource.getMouseRepo(), db);
+        updateProducts("keyboard", dataSource.getKeyboardRepo(), db);
+        updateProducts("monitor", dataSource.getMonitorRepo(), db);
     }
 
-    public void updateProducts(String tableName, ArrayList<HashMap> repo) {
-        SQLiteDatabase db = getWritableDatabase();
+    public void updateProducts(String tableName, ArrayList<HashMap> repo, SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + tableName);
         String CREATE_TABLE = "CREATE TABLE " + tableName + "("
                 + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
