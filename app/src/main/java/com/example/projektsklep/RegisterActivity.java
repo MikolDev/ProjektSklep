@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.example.projektsklep.Account.User;
 import com.example.projektsklep.R;
 
+import java.util.regex.Pattern;
+
 public class RegisterActivity extends AppCompatActivity {
     private MainActivity mainActivity;
     User user;
@@ -95,7 +97,10 @@ public class RegisterActivity extends AppCompatActivity {
                 || email.isEmpty()
                 || phoneNumber.isEmpty()
                 || password.isEmpty()
-                || !password.equals(passwordRepeat)) {
+                || !password.equals(passwordRepeat)
+                || !(phoneNumber.length() == 9
+                || phoneNumber.length() == 11)
+                ) {
             return false;
         }
         return true;
