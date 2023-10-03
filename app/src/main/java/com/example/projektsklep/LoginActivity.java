@@ -17,6 +17,11 @@ public class LoginActivity extends AppCompatActivity {
     Button submit;
     Button register;
 
+    /**
+     * Metoda inicjalizuje przycisk logowania się i reaguje na wykorzystanie formularza.
+     *
+     * @param savedInstanceState stan klasy
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +53,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Metoda waliduje dane.
+     *
+     * @param email email do walidacji
+     * @param password hasło do walidacji
+     * @return czy dane poprawne
+     */
     private boolean validate(String email, String password) {
         if (email.isEmpty() || password.isEmpty()) return false;
         return true;

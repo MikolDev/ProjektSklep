@@ -32,6 +32,14 @@ public class MainActivity extends AppCompatActivity {
     public BottomAppBar bottomAppBar;
     public DatabaseHelper dbHelper;
 
+    /**
+     * Metoda przygotowuje widoki: kontener od fragmentów i dolną nawigację.
+     * Pobierany jest użytkownik z SharedPreferences.
+     * Na początku wywoływany jest fragment ze sklepem.
+     * Inicjalizacja nawigacji.
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
         initNavigationListener();
     }
 
+    /**
+     * Metoda odtwarza obiekt użytkownika z SharedPreferences.
+     * Obiekt użytkownika jest przechowywany jako String, dlatego trzeba stworzyć z niego nowy obiekt za pomocą Gsona.
+     */
     public void loadData() {
         // odtwarzanie currentUsera
         SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
@@ -58,6 +70,9 @@ public class MainActivity extends AppCompatActivity {
         currentUser = new Gson().fromJson(savedUser, User.class);
     }
 
+    /**
+     * Metoda zapisuje obiekt użytkownika w SharedPreferences. Obiekt użytkownika jest parsowany na string.
+     */
     public void saveData() {
         // zapisywanie currentUsera
         SharedPreferences sharedPreferences = this.getPreferences(Context.MODE_PRIVATE);
@@ -70,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
         sharedPrefEditor.apply();
     }
 
+    /**
+     * Metoda wywoływana przy przerwaniu działania aplikacji. Zapisuje użytkownika metodą saveData.
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -77,6 +95,9 @@ public class MainActivity extends AppCompatActivity {
         saveData();
     }
 
+    /**
+     * Metoda wywoływana przy ponownym uruchomieniu aplikacji. Próbuje odtworzyć użytkownika metodą loadData.
+     */
     protected void onResume() {
         super.onResume();
 
@@ -93,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metoda odpowiada za zmianę widoków (fragmentów).
+     *
+     * @param id id widoku
+     */
     public void changeFragment(int id) {
         Fragment fragment;
 
@@ -113,6 +139,10 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
     }
 
+    /**
+     * Metoda odpowiada za działanie menu dolnego i w zależności od wybranego przycisku zmienia widok metodą changeFragment.
+     *
+     */
     public void initNavigationListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -134,15 +164,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Getter do aktualnie zalogowanego użytkownika.
+     * @return aktualny użytkownik
+     */
     public User getCurrentUser() {
         return currentUser;
     }
 
+    /**
+     * Metoda ustawia aktualnie zalogowanego użytkownika. Od razu zapisuje również użytkownika w SharedPreferences za pomocą metody saveData.
+     * @param currentUser użytkownik do zalogowania
+     */
     public void setCurrentUser(User currentUser) {
         this.currentUser = currentUser;
         saveData();
     }
 
+    /**
+     * Metoda przygotowuje menu w prawym górnym rogu.
+     *
+     * @param menu obiekt Menu
+     * @return zawsze true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -150,6 +194,11 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Metoda odpowiada za działanie menu w prawym górnym rogu.
+     * @param item pozycja z menu
+     * @return po wybraniu opcji z menu true
+     */
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch(item.getItemId()) {
@@ -161,6 +210,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Metoda pokazuje dialog z informacjami o autorze programu.
+     */
     public void showAuthorInfo() {
         DialogInterface.OnClickListener authorListener = new DialogInterface.OnClickListener() {
             @Override

@@ -13,7 +13,9 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-
+/**
+ * Klasa odpowiada za wysyłanie SMSa.
+ */
 public class SMS {
     String phoneNumber;
     String message;
@@ -27,6 +29,9 @@ public class SMS {
         this.smsManager = SmsManager.getDefault();
     }
 
+    /**
+     * Metoda wysyła SMSa.
+     */
     public void sendSms() {
         if (checkPermission(Manifest.permission.SEND_SMS, 1)) {
             if (checkData()) {
@@ -43,6 +48,13 @@ public class SMS {
         Log.v("SMS","test" + phoneNumber + " " + message);
     }
 
+    /**
+     * Metoda sprawdza, czy na urządzeniu jest zezwolenie na wysyłanie SMSów przez aplikację.
+     *
+     * @param permission permisja
+     * @param requestCode
+     * @return permisja, jeśli jest
+     */
     private boolean checkPermission(String permission, int requestCode) {
         if (context.checkSelfPermission(permission) == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions((Activity) context, new String[] { permission }, requestCode);
@@ -52,6 +64,11 @@ public class SMS {
     }
 
 
+    /**
+     * Metoda sprawdza, czy numer telefonu i wiadomość nie są puste.
+     *
+     * @return true, jeśli nie są puste, w przeciwnym wypadku false
+     */
     public boolean checkData() {
         if (phoneNumber.equals("") || message.equals("")) return false;
         return true;

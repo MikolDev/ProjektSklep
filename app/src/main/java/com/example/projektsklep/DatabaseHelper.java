@@ -71,6 +71,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        updateAllProducts();
     }
 
+    /**
+     * Metoda tworzy tabele użytkowników i zamówień.
+     *
+     * @param db obiekty bazy danych, w którym będą tworzone tabele
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USER_TABLE);
@@ -78,6 +83,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         updateAllProducts(db);
     }
 
+    /**
+     * Metoda wywoywana przy upgradzie. Usuwa tabele użytkowników i zamówień i wywołuje ich tworzenie
+     *
+     * @param db obiekt bazy danych, w którym mają być nowe tabele
+     * @param i
+     * @param i1
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(DROP_USER_TABLE);
@@ -85,6 +97,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    /**
+     * Metoda pobiera produkty ze źródła danych i wywołuje metodę do zapisania tych produktów w bazie.
+     *
+     * @param db obiekt bazy danych, w której mają być zapisane produkty
+     */
     public void updateAllProducts(SQLiteDatabase db) {
         updateProducts("pc", dataSource.getCentralUnitRepo(), db);
         updateProducts("mouse", dataSource.getMouseRepo(), db);
@@ -92,6 +109,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         updateProducts("monitor", dataSource.getMonitorRepo(), db);
     }
 
+    /**
+     * Zapisuje dane produktów do bazy danych. Jeżeli tabela istnieje, usuwa ją i tworzy na nowo.
+     *
+     * @param tableName nazwa tabeli, do której mają trafić produkty
+     * @param repo zestaw danych produktów
+     * @param db obiekt bazy danych, do której mają być zapisane produkty
+     */
     public void updateProducts(String tableName, ArrayList<HashMap> repo, SQLiteDatabase db) {
         db.execSQL("DROP TABLE IF EXISTS " + tableName);
         String CREATE_TABLE = "CREATE TABLE " + tableName + "("
@@ -121,6 +145,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }));
     }
 
+    /**
+     * Metoda pobiera produkty z bazy danych.
+     *
+     * @param tableName nazwa tabeli (produktu)
+     * @return zestaw danych produktów
+     */
     public ArrayList<HashMap> getProducts(String tableName) {
         ArrayList<HashMap> repo = new ArrayList<>();
 
@@ -144,6 +174,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return repo;
     }
 
+    /**
+     * Metoda pobiera zamówienia danego użytkownika z bazy danych.
+     *
+     * @param userId id użytkownika, dla którego chcemy pobrać zamówienia
+     * @return zestaw danych zamówień
+     */
     public ArrayList<Order> getOrders(int userId) {
         ArrayList<Order> orders = new ArrayList<>();
 
@@ -168,6 +204,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return orders;
     }
 
+    /**
+     * Metoda dodaje użytkownika do bazy danych. Nie można dodawać dwóch użytkowników o tym samym adresie email.
+     *
+     * @param user użytkownik do dodania
+     * @return -1 jeżeli istnieje, id jeżeli dodano
+     */
     public long addUser(User user) {
         if (emailExists(user.getEmail())) return -1;
         SQLiteDatabase db = this.getWritableDatabase();
@@ -181,6 +223,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_USER, null, values);
     }
 
+    /**
+     * Metoda używana przy logowaniu. Sprawdza, czy jest użytkownik z podanym emailem i hasłem.
+     *
+     * @param email email użytkownika
+     * @param password hasło użytkownika
+     * @return true, jeśli istnieje, w przeciwnym wypadku false
+     */
     public boolean checkUser(String email, String password) {
         String[] columns = {
                 COLUMN_USER_ID
@@ -205,6 +254,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * Metoda sprawdza, czy podany email znajduje się w bazie.
+     *
+     * @param input email do znalezienia
+     * @return true, jeśli znajduje się, w przeciwnym wypadku false
+     */
     public boolean emailExists(String input) {
         SQLiteDatabase db = getReadableDatabase();
 
@@ -223,6 +278,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return false;
     }
 
+    /**
+     * Metoda pobiera dane użytkownika z bazy danych na podstawie emaila i hasła.
+     *
+     * @param email email użytkownika
+     * @param password hasło użytkownika
+     * @return obiekt użytkownika z wszystkimi danymi
+     */
     public User getUserData(String email, String password) {
         User user = new User();
 
@@ -261,6 +323,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
+    /**
+     * Metoda pobiera dane użytkownika z bazy danych na podstawie id z bazy.
+     *
+     * @param id id użytkownika, którego dane chcemy pobrać
+     * @return obiekt użytkownika
+     */
     public User getUserById(int id) {
         User user = new User();
 
@@ -299,6 +367,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return user;
     }
 
+    /**
+     * Metoda dodaje zamówienie do bazy.
+     *
+     * @param order obiekt zamówienia do zapisania w bazie
+     * @return -1 jeśli się nie uda, w przeciwnym wypadku id zamówienia
+     */
     public long addOrder(Order order) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -325,6 +399,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return success;
     }
 
+
+    /**
+     * Metoda usuwa zamówienie z bazy na podstawie id.
+     *
+     * @param id id zamówienia do usunięcia
+     * @return 0 jeśli się nie powiodło, w przeciwnym wypadku 1 (rows affected)
+     */
     public long deleteOrder(int id) {
         SQLiteDatabase db = getReadableDatabase();
         long success = db.delete("orders", "id=?", new String[]{String.valueOf(id)});
@@ -332,6 +413,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return success;
     }
 
+    /**
+     * Metoda zwraca dane produktu na podstawie id i rodzaju produktu.
+     *
+     * @param id id produktu do odszukania
+     * @param table nazwa tabeli (rodzaj produktu)
+     * @return lista z danymi produktu
+     */
     public String[] getProductInfo(int id, String table) {
         SQLiteDatabase db = getWritableDatabase();
         String sql = "SELECT description, price, img FROM " + table + " WHERE id = " + id;

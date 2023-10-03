@@ -32,6 +32,11 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText editPasswordRepeat;
     private DatabaseHelper dbHelper;
 
+    /**
+     * Metoda inicjalizuje przycisk rejestracji i reaguje na wykorzystanie formularza.
+     *
+     * @param savedInstanceState stan klasy
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +75,9 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    // Initialize form inputs
+    /**
+     * Metoda pobiera inputy z formularza w widoku.
+     */
     private void initEditText() {
         editFirstName = findViewById(R.id.register_first_name);
         editLastName = findViewById(R.id.register_last_name);
@@ -80,7 +87,9 @@ public class RegisterActivity extends AppCompatActivity {
         editPasswordRepeat = findViewById(R.id.register_password_repeat);
     }
 
-    // Get user's data from form
+    /**
+     * Metoda pobiera wartości inputów z formularza w widoku.
+     */
     private void getData() {
         firstName = editFirstName.getText().toString().trim();
         lastName = editLastName.getText().toString().trim();
@@ -90,7 +99,10 @@ public class RegisterActivity extends AppCompatActivity {
         passwordRepeat = editPasswordRepeat.getText().toString().trim();
     }
 
-    // Form validation
+    /**
+     * Metoda waliduje dane formularza.
+     * @return czy poprawny
+     */
     private boolean validate() {
         if (firstName.isEmpty()
                 || lastName.isEmpty()

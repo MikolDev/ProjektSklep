@@ -67,6 +67,14 @@ public class ShopFragment extends Fragment {
     OrderState orderState;
     public static final String TAG = "ORDER";
 
+    /**
+     * Metoda zapełnia formularz do kupowania danymi produktów. Umożliwia potwierdzenia dokonania zamówienia.
+     *
+     * @param inflater inflater widoku sklepu
+     * @param container container widoku sklepu
+     * @param savedInstanceState stan widoku sklepu
+     * @return widok sklepu
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -140,6 +148,9 @@ public class ShopFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Metoda zapisuje w SharedPreferences aktualny stan formularza.
+     */
     public void saveFormState() {
         int pcPos = pcSpinner.getSelectedItemPosition();
         int mousePos = mouseSpinner.getSelectedItemPosition();
@@ -156,12 +167,18 @@ public class ShopFragment extends Fragment {
         super.onDestroyView();
     }
 
+    /**
+     * Metoda odtwarza stan formularza z SharedPreferences. Odtwarza obiekt stanu formularza ze Stringa do klasy.
+     */
     public void loadFormState() {
         SharedPreferences formPreferences = this.getActivity().getPreferences(Context.MODE_PRIVATE);
         String savedState = formPreferences.getString("formState", null);
         orderState = new Gson().fromJson(savedState, OrderState.class);
     }
 
+    /**
+     * Metoda ustawia checkboxy tak jak w zapisanym stanie,
+     */
     public void restoreForm() {
         if (orderState != null) {
             if (orderState.isMouse == 1) {
@@ -180,11 +197,18 @@ public class ShopFragment extends Fragment {
         }
     }
 
+    /**
+     * Metoda wywoływana przy zatrzymaniu aplikacji. Służy do wywołania metody, która zapisuje aktualny stan formularza.
+     */
     public void onPause() {
         saveFormState();
         super.onPause();
     }
 
+    /**
+     * Metoda wywoływana przy odtwarzaniu widoku. Wywołuje metody, które zapełniają formularz zapisanymi danymi.
+     * @param savedInstanceState stan formularza
+     */
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         loadFormState();
@@ -192,6 +216,9 @@ public class ShopFragment extends Fragment {
         super.onViewStateRestored(savedInstanceState);
     }
 
+    /**
+     * Metoda obsługuje listenery spinnery produktów w formularzu zamówienia.
+     */
     public void initSpinnerListeners() {
         pcSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -266,6 +293,9 @@ public class ShopFragment extends Fragment {
         });
     }
 
+    /**
+     * Metoda obsługuje listenery checkboxów w formularzu zamówienia.
+     */
     public void initCheckBoxListeners() {
         checkBoxMouse.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -305,6 +335,11 @@ public class ShopFragment extends Fragment {
 
     }
 
+    /**
+     * Metoda aktualizuje koszt zamówienia.
+     *
+     * @return nowy koszt zamówienia
+     */
     public float updateTotal() {
         total = pcPrice + mousePriceFactor * mousePrice + keyboardPriceFactor * keyboardPrice + monitorPriceFactor * monitorPrice;
         totalPlaceholder.setText(total + " zł");

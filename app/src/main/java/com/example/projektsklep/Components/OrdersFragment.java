@@ -28,6 +28,14 @@ public class OrdersFragment extends Fragment {
     int currentUserId;
     View view;
 
+    /**
+     * Metoda tworzy widok do zamówień.
+     *
+     * @param inflater inflater widoku zamówień
+     * @param container
+     * @param savedInstanceState stan widoku
+     * @return widok do zamówień
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,6 +53,9 @@ public class OrdersFragment extends Fragment {
         return view;
     }
 
+    /**
+     * Metoda zapełnia listView informacjami o zamówieniach użytkownika.
+     */
     public void showOrders() {
         ListView listView = view.findViewById(R.id.orders_list_view);
         ArrayList<Order> orders = dbHelper.getOrders(currentUserId);

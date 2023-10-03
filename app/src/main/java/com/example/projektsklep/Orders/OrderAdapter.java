@@ -49,6 +49,14 @@ public class OrderAdapter extends BaseAdapter {
         return 0;
     }
 
+    /**
+     * Metoda zapisuje dane zamówienia jako item z ListView.
+     *
+     * @param position indeks z ListView
+     * @param view layout do pojedynczego zamówienia
+     * @param viewGroup
+     * @return widok pojedynczego zamówienia z danymi
+     */
     @Override
     public View getView(int position, View view, ViewGroup viewGroup) {
         Order order = orders.get(position);
@@ -118,6 +126,12 @@ public class OrderAdapter extends BaseAdapter {
         return view;
     }
 
+    /**
+     * Metoda usuwa zamówienie z bazy danych i z ListView.
+     *
+     * @param order obiekt zamówienia
+     * @param i indeks z ListView
+     */
     private void deleteItem(Order order, int i) {
         long success = dbHelper.deleteOrder(order.getOrderId());
         OrderAdapter.this.notifyDataSetChanged();

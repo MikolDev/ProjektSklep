@@ -13,6 +13,9 @@ import com.example.projektsklep.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Adapter do spinnerów z widoku sklepu. Dane o produktach pobierane są ze źródła i są wyświetlane użytkownikowi do wyboru jako pozycje spinnera.
+ */
 public class ProductAdapter extends BaseAdapter {
     Context context;
     ArrayList<HashMap> repo;
@@ -28,11 +31,20 @@ public class ProductAdapter extends BaseAdapter {
         this.layoutInflater = LayoutInflater.from(context);
     }
 
+    /**
+     * Zwraca długość listy produktów.
+     * @return długość listy
+     */
     @Override
     public int getCount() {
         return repo.size();
     }
 
+    /**
+     * Zwraca obiekt z listy o danym id.
+     * @param i index obiektu do znalezienia
+     * @return szukany obiekt
+     */
     @Override
     public Object getItem(int i) {
         return repo.get(i);
@@ -43,6 +55,14 @@ public class ProductAdapter extends BaseAdapter {
         return 0;
     }
 
+    /**
+     * Metoda obsługuje widok pojedynczej pozycji spinnera. Ustawia dane produktu w widoku.
+     *
+     * @param i index z listy produktów
+     * @param view widok
+     * @param viewGroup
+     * @return widok z wypełnionymi danymi
+     */
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         HashMap<String, String> hashMap = repo.get(i);

@@ -26,6 +26,14 @@ public class ProfileFragment extends Fragment {
     TextView profileInfoView;
     Button logoutButton;
 
+    /**
+     * Metoda pokazuje informacje o użytkowniku, jeżeli jest zalogowany. Umożliwia również wylogowanie się.
+     *
+     * @param inflater inflater widoku profilu
+     * @param container
+     * @param savedInstanceState stan fragmentu
+     * @return widok profilu
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -10,6 +10,9 @@ import com.example.projektsklep.R;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Klasa służy jako źródło danych o produktach. Ma symulować działanie aplikacji, w której dane produktów byłyby pobierane z jakiejś bazy.
+ */
 public class DataSource {
     private ArrayList<HashMap> centralUnitRepo;
     private ArrayList<HashMap> mouseRepo;
@@ -23,6 +26,12 @@ public class DataSource {
         monitorRepo = createMonitorRepo();
     }
 
+    /**
+     * Metoda zamienia ArrayList produktów na HashMap.
+     *
+     * @param sample ArrayList produktów
+     * @return HashMap produktów
+     */
     private ArrayList<HashMap> productToHashMap(ArrayList<Product> sample) {
         ArrayList<HashMap> list = new ArrayList<>();
         sample.forEach((product) -> {
@@ -37,6 +46,11 @@ public class DataSource {
         return list;
     }
 
+    /**
+     * W metodzie dodawane są ręcznie dane jednostek centralnych.
+     *
+     * @return hashMap jednostek centralnych
+     */
     private ArrayList<HashMap> createCentralUnitRepo() {
         ArrayList<Product> sample = new ArrayList<>();
 
@@ -48,6 +62,11 @@ public class DataSource {
         return productToHashMap(sample);
     }
 
+    /**
+     * W metodzie dodawane są ręcznie dane myszek.
+     *
+     * @return hashMap myszek
+     */
     private ArrayList<HashMap> createMouseRepo() {
         ArrayList<Product> sample = new ArrayList<>();
 
@@ -58,6 +77,11 @@ public class DataSource {
         return productToHashMap(sample);
     }
 
+    /**
+     * W metodzie dodawane są ręcznie dane klawiatur.
+     *
+     * @return hashMap klawiatur
+     */
     private ArrayList<HashMap> createKeyboardRepo() {
         ArrayList<Product> sample = new ArrayList<>();
 
@@ -67,6 +91,11 @@ public class DataSource {
         return productToHashMap(sample);
     }
 
+    /**
+     * W metodzie dodawane są ręcznie dane monitorów.
+     *
+     * @return hashMap monitorów
+     */
     private ArrayList<HashMap> createMonitorRepo() {
         ArrayList<Product> sample = new ArrayList<>();
 
